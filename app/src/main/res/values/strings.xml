@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Personal Trainer Companion</string>
+    <string name="action_settings">Settings</string>
+    <string name="last_payment_info">Last Payment:</string>
+    <string name="no_payment_found">No payments found!</string>
+    <string formatted="false" name="last_payment_info_string">%s for %d classes.</string>
+</resources>

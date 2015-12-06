@@ -3,17 +3,17 @@ package com.szymkowski.personaltrainercompanion;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.szymkowski.personaltrainercompanion.payments.PaymentRepository;
 import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentDTO;
 
-public class Overview extends OrmLiteBaseActivity {
+public class Overview extends AppCompatActivity {
 
     private PaymentRepository paymentRepository;
 
@@ -22,8 +22,9 @@ public class Overview extends OrmLiteBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setActionBar(toolbar);
-        paymentRepository = new PaymentRepository(getConnectionSource());
+        setSupportActionBar(toolbar);
+        paymentRepository = new PaymentRepository(this);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

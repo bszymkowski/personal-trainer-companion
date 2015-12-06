@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+ext {
+    javaLanguageLevel = '1.6'
+    generatedMapperSourcesDir = "${buildDir}/generated-src/mapstruct/main"
+}
+
+sourceCompatibility = javaLanguageLevel
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -19,14 +26,61 @@ android {
     }
 }
 
+configurations {
+    mapstruct
+}
+
+sourceSets {
+    main {
+        ext.originalJavaSrcDirs = java.srcDirs
+        java.srcDir "${generatedMapperSourcesDir}"
+    }
+}
+
+
+task generateMainMapperClasses(type: JavaCompile) {
+    ext.aptDumpDir = file( "${buildDir}/tmp/apt/mapstruct" )
+    destinationDir = aptDumpDir
+
+    classpath = compileJava.classpath + configurations.mapstruct
+    source = sourceSets.main.originalJavaSrcDirs
+    ext.sourceDestDir = file ( "$generatedMapperSourcesDir" )
+
+    options.define(
+            compilerArgs: [
+                    "-nowarn",
+                    "-proc:only",
+                    "-encoding", "UTF-8",
+                    "-processor", "org.mapstruct.ap.MappingProcessor",
+                    "-s", sourceDestDir.absolutePath,
+                    "-source", javaLanguageLevel,
+                    "-target", javaLanguageLevel,
+            ]
+    );
+
+    inputs.dir source
+    outputs.dir generatedMapperSourcesDir;
+    doFirst {
+        sourceDestDir.mkdirs()
+    }
+    doLast {
+        aptDumpDir.delete()
+    }
+}
+
+
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     //ORM
-    provided 'com.j256.ormlite:ormlite-android:4.45'
-    provided "org.projectlombok:lombok:1.16.6"
-    provided 'org.mapstruct:mapstruct:1.0.0.Final'
+    compile 'com.j256.ormlite:ormlite-android:4.45'
+    compile "org.projectlombok:lombok:1.16.6"
+    compile 'org.mapstruct:mapstruct:1.0.0.Final'
+
+    mapstruct( 'org.mapstruct:mapstruct-processor:1.0.0.Final' )
+
 
 }

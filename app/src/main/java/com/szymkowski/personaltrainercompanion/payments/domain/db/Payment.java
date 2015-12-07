@@ -5,14 +5,11 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-//// FIXME: 06.12.2015
-@AllArgsConstructor(suppressConstructorProperties = true)
 @DatabaseTable
 public class Payment {
     public static final String PAYMENT_DATE_COLUMN = "payment_date";
@@ -26,5 +23,10 @@ public class Payment {
     @DatabaseField(columnName = NUMBER_OF_CLASSES_PAID_COLUMN)
     private int numberOfClassesPaid;
 
+    public Payment(Date paymentDate, int numberOfClassesPaid) {
+        this.id = 0L;
+        this.paymentDate = paymentDate;
+        this.numberOfClassesPaid = numberOfClassesPaid;
+    }
 
 }

@@ -1,11 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'groovyx.grooid.groovy-android'
 
-ext {
-    javaLanguageLevel = '1.6'
-    generatedMapperSourcesDir = "${buildDir}/generated-src/mapstruct/main"
-}
-
-sourceCompatibility = javaLanguageLevel
 
 android {
     compileSdkVersion 23
@@ -26,48 +21,6 @@ android {
     }
 }
 
-configurations {
-    mapstruct
-}
-
-sourceSets {
-    main {
-        ext.originalJavaSrcDirs = java.srcDirs
-        java.srcDir "${generatedMapperSourcesDir}"
-    }
-}
-
-
-task generateMainMapperClasses(type: JavaCompile) {
-    ext.aptDumpDir = file( "${buildDir}/tmp/apt/mapstruct" )
-    destinationDir = aptDumpDir
-
-    classpath = compileJava.classpath + configurations.mapstruct
-    source = sourceSets.main.originalJavaSrcDirs
-    ext.sourceDestDir = file ( "$generatedMapperSourcesDir" )
-
-    options.define(
-            compilerArgs: [
-                    "-nowarn",
-                    "-proc:only",
-                    "-encoding", "UTF-8",
-                    "-processor", "org.mapstruct.ap.MappingProcessor",
-                    "-s", sourceDestDir.absolutePath,
-                    "-source", javaLanguageLevel,
-                    "-target", javaLanguageLevel,
-            ]
-    );
-
-    inputs.dir source
-    outputs.dir generatedMapperSourcesDir;
-    doFirst {
-        sourceDestDir.mkdirs()
-    }
-    doLast {
-        aptDumpDir.delete()
-    }
-}
-
 
 
 dependencies {
@@ -80,7 +33,5 @@ dependencies {
     compile "org.projectlombok:lombok:1.16.6"
     compile 'org.mapstruct:mapstruct:1.0.0.Final'
 
-    mapstruct( 'org.mapstruct:mapstruct-processor:1.0.0.Final' )
-
-
+    testCompile 'org.robospock:robospock:0.8.0'
 }

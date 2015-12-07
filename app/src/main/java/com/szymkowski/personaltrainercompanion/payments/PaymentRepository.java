@@ -24,7 +24,7 @@ public class PaymentRepository {
 
     public PaymentRepository(Context context) {
         try {
-            paymentLongDao = OpenHelperManager.getHelper(context, OrmDbHelper.class).getDao();;
+            paymentLongDao = OpenHelperManager.getHelper(context, OrmDbHelper.class).getDao();
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception in creating PaymentRepository. Exception: " + e.getMessage());
         }
@@ -44,7 +44,7 @@ public class PaymentRepository {
         PaymentDTO result;
         List<Payment> payments = Collections.EMPTY_LIST;
         QueryBuilder builder = paymentLongDao.queryBuilder();
-        builder.orderBy(Payment.PAYMENT_DATE_COLUMN, true).limit(1L);
+        builder.orderBy(Payment.PAYMENT_DATE_COLUMN, false).limit(1L);
         try {
             PreparedQuery<Payment> paymentPreparedQuery  = builder.prepare();
             payments = paymentLongDao.query(paymentPreparedQuery);
@@ -68,7 +68,7 @@ public class PaymentRepository {
 
     //// FIXME: 06.12.2015
     private Payment getPaymentFromDto(PaymentDTO paymentDTO) {
-        Payment payment = new Payment(0L, paymentDTO.getPaymentDate(), paymentDTO.getNumberOfClassesPaid());
+        Payment payment = new Payment(paymentDTO.getPaymentDate(), paymentDTO.getNumberOfClassesPaid());
         return payment;
     }
 }

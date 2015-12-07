@@ -1,10 +1,10 @@
 package com.szymkowski.personaltrainercompanion.payments
-
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import com.szymkowski.personaltrainercompanion.OrmDbHelper
 import com.szymkowski.personaltrainercompanion.payments.domain.db.Payment
+import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentDTO
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification
@@ -15,6 +15,14 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
 
     def paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), OrmDbHelper.class).getDao()
     def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
+
+    def cleanup() {
+        paymentDAO.delete(paymentDAO.queryForAll())
+    }
+
+    def setup() {
+        paymentDAO.delete(paymentDAO.queryForAll())
+    }
 
     def 'get last payment should return last payment dao'() {
         given:
@@ -32,6 +40,21 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
         then:
             resultPaymentDTO.numberOfClassesPaid == 8
             resultPaymentDTO.paymentDate == targetDate
+    }
+
+    //fixme use mocks
+    def 'should properly receive DTO and save payment'() {
+        given:
+            def date = new Date();
+            def payment = new PaymentDTO(date, 8)
+        when:
+            paymentRepository.addPayment(payment)
+        then:
+            def payment1 = paymentDAO.findAll().iterator().next()
+            payment1.paymentDate == payment.paymentDate
+            payment1.numberOfClassesPaid == payment.numberOfClassesPaid
+
+
     }
 
 

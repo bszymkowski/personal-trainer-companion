@@ -10,12 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.PaymentRepository;
-import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentDTO;
 
-public class Overview extends AppCompatActivity {
+public class OverviewActivity extends AppCompatActivity {
 
-    private PaymentRepository paymentRepository;
+    private TextView mLastPaymentInfoText;
+
+    private PaymentRepository mPaymentRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,8 +25,8 @@ public class Overview extends AppCompatActivity {
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        paymentRepository = new PaymentRepository(this);
-
+        mPaymentRepository = new PaymentRepository(this);
+        mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -39,16 +41,15 @@ public class Overview extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        TextView lastPayment = (TextView) findViewById(R.id.last_payment_info);
-        PaymentDTO lastPaymentInfo = paymentRepository.getLastPayment();
+        PaymentDTO lastPaymentDto = mPaymentRepository.getLastPayment();
         String paymentInfoText;
-        if (lastPaymentInfo == null) {
+        if (lastPaymentDto == null) {
             paymentInfoText = getResources().getString(R.string.no_payment_found);
         } else {
             String rawPaymentInfo = getResources().getString(R.string.last_payment_info_string);
-            paymentInfoText = String.format(rawPaymentInfo, lastPaymentInfo.getPaymentDate().toString(), lastPaymentInfo.getNumberOfClassesPaid());
+            paymentInfoText = String.format(rawPaymentInfo, lastPaymentDto.getPaymentDate().toString(), lastPaymentDto.getNumberOfClassesPaid());
         }
-        lastPayment.setText(paymentInfoText);
+        mLastPaymentInfoText.setText(paymentInfoText);
     }
 
     @Override

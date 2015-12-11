@@ -6,14 +6,14 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Getter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
 @DatabaseTable
-class Payment {
+public class Payment {
     public static final String PAYMENT_DATE_COLUMN = "payment_date";
     public static final String NUMBER_OF_CLASSES_PAID_COLUMN = "number_of_classes_paid";
     @DatabaseField(generatedId = true)

@@ -2,7 +2,6 @@ package com.szymkowski.personaltrainercompanion.payments
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
-import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentDTO
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification

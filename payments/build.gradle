@@ -1,0 +1,13 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+}
+
+dependencies {
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.j256.ormlite:ormlite-android:4.45'
+    compile 'org.projectlombok:lombok:1.16.6'
+}

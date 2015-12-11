@@ -1,14 +1,19 @@
-package com.szymkowski.personaltrainercompanion.payments.domain.dto;
+package com.szymkowski.personaltrainercompanion.payments;
 
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor(suppressConstructorProperties = true)
-@Getter
+@Data
+@EqualsAndHashCode
+@NoArgsConstructor
 public class PaymentDTO {
 
     private Date paymentDate;
     private int numberOfClassesPaid;
+
 }

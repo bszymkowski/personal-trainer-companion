@@ -16,7 +16,7 @@ public class PaymentRepository {
 
     private static final String TAG = PaymentRepository.class.getSimpleName();
     private Dao<Payment, Long> paymentLongDao;
-    private PaymentMapper paymentMapper = PaymentMapper.INSTANCE;
+    private final PaymentMapper paymentMapper = PaymentMapper.INSTANCE;
 
     public PaymentRepository(Database database) {
         try {
@@ -38,7 +38,7 @@ public class PaymentRepository {
     public PaymentDTO getLastPayment() {
         PaymentDTO result;
         List<Payment> payments = Collections.EMPTY_LIST;
-        QueryBuilder builder = paymentLongDao.queryBuilder();
+        QueryBuilder<Payment, Long> builder = paymentLongDao.queryBuilder();
         builder.orderBy(Payment.PAYMENT_DATE_COLUMN, false).limit(1L);
         try {
             PreparedQuery<Payment> paymentPreparedQuery  = builder.prepare();

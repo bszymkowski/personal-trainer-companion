@@ -3,7 +3,7 @@ apply plugin: 'groovyx.grooid.groovy-android'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.szymkowski.personaltrainercompanion"
@@ -30,8 +30,8 @@ dependencies {
     compile 'org.projectlombok:lombok:1.16.6'
 
     //mapstruct
-    compile 'org.mapstruct:mapstruct:+'
-    provided 'org.mapstruct:mapstruct-processor:+'
+    compile 'org.mapstruct:mapstruct:1.0.0.Final'
+    provided 'org.mapstruct:mapstruct-processor:1.0.0.Final'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     testCompile 'org.robospock:robospock:0.8.0'

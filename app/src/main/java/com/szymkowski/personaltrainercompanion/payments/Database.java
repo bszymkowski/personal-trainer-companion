@@ -1,10 +1,6 @@
 package com.szymkowski.personaltrainercompanion.payments;
 
-/**
- * Created by wujze on 06.12.2015.
- */
-
-    import android.content.Context;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 

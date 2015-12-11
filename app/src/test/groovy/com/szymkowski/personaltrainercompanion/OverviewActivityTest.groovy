@@ -36,7 +36,7 @@ class OverviewActivityTest extends GradleRoboSpecification {
             controller.visible()
         when:
             def overviewActivity = controller.get()
-            TextView lastPaymentInfo =  overviewActivity.findViewById(R.id.last_payment_info)
+            TextView lastPaymentInfo = overviewActivity.findViewById(R.id.last_payment_info) as TextView
         then:
             lastPaymentInfo.getText() == RuntimeEnvironment.application.getResources().getString(R.string.no_payment_found)
         cleanup:

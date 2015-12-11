@@ -1,4 +1,4 @@
-package com.szymkowski.personaltrainercompanion;
+package com.szymkowski.personaltrainercompanion.payments;
 
 /**
  * Created by wujze on 06.12.2015.
@@ -13,15 +13,14 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
-import com.szymkowski.personaltrainercompanion.payments.domain.db.Payment;
 
-import java.sql.SQLException;
+    import java.sql.SQLException;
 
 /**
      * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
      * the DAOs used by the other classes.
      */
-    public class OrmDbHelper extends OrmLiteSqliteOpenHelper {
+    public class Database extends OrmLiteSqliteOpenHelper {
 
         // name of the database file for your application -- change to something appropriate for your app
         private static final String DATABASE_NAME = "personal_trainer_companion.db";
@@ -32,7 +31,7 @@ import java.sql.SQLException;
         private Dao<Payment, Long> simpleDao = null;
         private RuntimeExceptionDao<Payment, Long> simpleRuntimeDao = null;
 
-        public OrmDbHelper(Context context) {
+        public Database(Context context) {
             //// FIXME: 06.12.2015 add config file
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
@@ -44,10 +43,10 @@ import java.sql.SQLException;
         @Override
         public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
             try {
-                Log.i(OrmDbHelper.class.getName(), "onCreate");
+                Log.i(Database.class.getName(), "onCreate");
                 TableUtils.createTable(connectionSource, Payment.class);
             } catch (SQLException e) {
-                Log.e(OrmDbHelper.class.getName(), "Can't create database", e);
+                Log.e(Database.class.getName(), "Can't create database", e);
                 throw new RuntimeException(e);
             }
 
@@ -69,12 +68,12 @@ import java.sql.SQLException;
         @Override
         public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) {
             try {
-                Log.i(OrmDbHelper.class.getName(), "onUpgrade");
+                Log.i(Database.class.getName(), "onUpgrade");
                 TableUtils.dropTable(connectionSource, Payment.class, true);
                 // after we drop the old databases, we create the new ones
                 onCreate(db, connectionSource);
             } catch (SQLException e) {
-                Log.e(OrmDbHelper.class.getName(), "Can't drop databases", e);
+                Log.e(Database.class.getName(), "Can't drop databases", e);
                 throw new RuntimeException(e);
             }
         }

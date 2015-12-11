@@ -2,8 +2,6 @@ package com.szymkowski.personaltrainercompanion.payments
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
-import com.szymkowski.personaltrainercompanion.OrmDbHelper
-import com.szymkowski.personaltrainercompanion.payments.domain.db.Payment
 import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentDTO
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -13,7 +11,7 @@ import pl.polidea.robospock.GradleRoboSpecification
 class PaymentRepositoryTest extends GradleRoboSpecification  {
 
 
-    def paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), OrmDbHelper.class).getDao()
+    def paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao()
     def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
 
     def cleanup() {
@@ -53,8 +51,6 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
             def payment1 = paymentDAO.findAll().iterator().next()
             payment1.paymentDate == payment.paymentDate
             payment1.numberOfClassesPaid == payment.numberOfClassesPaid
-
-
     }
 
 

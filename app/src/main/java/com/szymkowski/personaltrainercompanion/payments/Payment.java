@@ -1,4 +1,4 @@
-package com.szymkowski.personaltrainercompanion.payments.domain.db;
+package com.szymkowski.personaltrainercompanion.payments;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
 @DatabaseTable
-public class Payment {
+class Payment {
     public static final String PAYMENT_DATE_COLUMN = "payment_date";
     public static final String NUMBER_OF_CLASSES_PAID_COLUMN = "number_of_classes_paid";
     @DatabaseField(generatedId = true)

@@ -64,6 +64,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/assets" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/aidl" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/groovy" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/rs" isTestSource="true" />
@@ -118,8 +119,8 @@
     <orderEntry type="library" exported="" scope="TEST" name="groovy-all-2.3.8" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-resources-3.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-annotations-3.0" level="project" />
-    <orderEntry type="library" exported="" scope="TEST" name="sqlite4java-0.282" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="asm-tree-5.0.1" level="project" />
+    <orderEntry type="library" exported="" scope="TEST" name="sqlite4java-0.282" level="project" />
     <orderEntry type="library" exported="" name="design-23.1.1" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="robolectric-utils-3.0" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="asm-analysis-5.0.1" level="project" />

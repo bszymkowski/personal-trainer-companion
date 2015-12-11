@@ -7,8 +7,6 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.szymkowski.personaltrainercompanion.OrmDbHelper;
-import com.szymkowski.personaltrainercompanion.payments.domain.db.Payment;
 import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentDTO;
 
 import java.sql.SQLException;
@@ -24,11 +22,10 @@ public class PaymentRepository {
 
     public PaymentRepository(Context context) {
         try {
-            paymentLongDao = OpenHelperManager.getHelper(context, OrmDbHelper.class).getDao();
+            paymentLongDao = OpenHelperManager.getHelper(context, Database.class).getDao();
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception in creating PaymentRepository. Exception: " + e.getMessage());
         }
-
     }
 
     public void addPayment(PaymentDTO paymentDTO) {

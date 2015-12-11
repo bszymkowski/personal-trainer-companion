@@ -5,20 +5,28 @@ import com.szymkowski.personaltrainercompanion.BuildConfig
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification
+import spock.lang.Shared
 
 @Config(constants = BuildConfig, sdk = Build.VERSION_CODES.KITKAT)
 class PaymentRepositoryTest extends GradleRoboSpecification  {
 
 
-    def paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao()
-    def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
-
-    def cleanup() {
-        paymentDAO.delete(paymentDAO.queryForAll())
-    }
+    @Shared def paymentDAO
+    @Shared def paymentRepository
 
     def setup() {
         paymentDAO.delete(paymentDAO.queryForAll())
+    }
+
+    def setupSpec() {
+        def database = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class)
+        paymentDAO = database.getDao()
+        paymentRepository = new PaymentRepository(database)
+
+    }
+
+    def cleanupSpec() {
+        OpenHelperManager.releaseHelper()
     }
 
     def 'get last payment should return last payment dao'() {

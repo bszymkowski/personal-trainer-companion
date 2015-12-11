@@ -1,9 +1,7 @@
 package com.szymkowski.personaltrainercompanion.payments;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -20,11 +18,11 @@ public class PaymentRepository {
     private Dao<Payment, Long> paymentLongDao;
     private PaymentMapper paymentMapper = PaymentMapper.INSTANCE;
 
-    public PaymentRepository(Context context) {
+    public PaymentRepository(Database database) {
         try {
-            paymentLongDao = OpenHelperManager.getHelper(context, Database.class).getDao();
+            paymentLongDao = database.getDao();
         } catch (SQLException e) {
-            Log.e(TAG, "SQLite exception in creating PaymentRepository. Exception: " + e.getMessage());
+            Log.e(TAG, "SQLite exception when accessing Payments database!");
         }
     }
 

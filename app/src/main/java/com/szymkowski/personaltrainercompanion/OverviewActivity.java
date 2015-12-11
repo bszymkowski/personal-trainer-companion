@@ -10,14 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.j256.ormlite.android.apptools.OpenHelperManager;
+import com.szymkowski.personaltrainercompanion.payments.Database;
 import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.PaymentRepository;
 
 public class OverviewActivity extends AppCompatActivity {
 
+    private static final String TAG = OverviewActivity.class.getSimpleName();
     private TextView mLastPaymentInfoText;
 
     private PaymentRepository mPaymentRepository;
+    private Database mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +29,8 @@ public class OverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mPaymentRepository = new PaymentRepository(this);
+        mDatabase = OpenHelperManager.getHelper(this, Database.class);
+        mPaymentRepository = new PaymentRepository(mDatabase);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -57,6 +62,15 @@ public class OverviewActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_overview, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mDatabase != null) {
+            OpenHelperManager.releaseHelper();
+            mDatabase = null;
+        }
     }
 
     @Override

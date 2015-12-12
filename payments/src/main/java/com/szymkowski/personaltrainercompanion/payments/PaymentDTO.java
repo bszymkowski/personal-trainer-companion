@@ -15,5 +15,4 @@ public class PaymentDTO {
 
     private DateTime paymentDate;
     private int numberOfClassesPaid;
-
 }

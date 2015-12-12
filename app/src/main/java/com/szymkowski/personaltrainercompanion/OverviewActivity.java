@@ -1,20 +1,27 @@
 package com.szymkowski.personaltrainercompanion;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.PaymentRepository;
+import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
+import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback;
 
-public class OverviewActivity extends AppCompatActivity {
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
+public class OverviewActivity extends AppCompatActivity implements AddPaymentDialogCallback {
+
+    private DateTimeFormatter dateTimeFormatter;
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private TextView mLastPaymentInfoText;
 
@@ -29,28 +36,23 @@ public class OverviewActivity extends AppCompatActivity {
         mPaymentRepository = new PaymentRepository(this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fabAddPayment = (FloatingActionButton) findViewById(R.id.fab_action_add_payment);
+        fabAddPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Dialog addPaymentDialog = new AddPaymentDialog(OverviewActivity.this);
+                addPaymentDialog.show();
             }
         });
+        dateTimeFormatter = DateTimeFormat.shortDateTime();
+
+        Log.i(TAG, "Activity created");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        PaymentDTO lastPaymentDto = mPaymentRepository.getLastPayment();
-        String paymentInfoText;
-        if (lastPaymentDto == null) {
-            paymentInfoText = getResources().getString(R.string.no_payment_found);
-        } else {
-            String rawPaymentInfo = getResources().getString(R.string.last_payment_info_string);
-            paymentInfoText = String.format(rawPaymentInfo, lastPaymentDto.getPaymentDate().toString(), lastPaymentDto.getNumberOfClassesPaid());
-        }
-        mLastPaymentInfoText.setText(paymentInfoText);
+        updateLastPayment();
     }
 
     @Override
@@ -73,5 +75,24 @@ public class OverviewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void addPayment(PaymentDTO newPayment) {
+        mPaymentRepository.addPayment(newPayment);
+        updateLastPayment();
+    }
+
+    private void updateLastPayment() {
+        PaymentDTO lastPaymentDto = mPaymentRepository.getLastPayment();
+        String paymentInfoText;
+        if (lastPaymentDto == null) {
+            paymentInfoText = getResources().getString(R.string.no_payment_found);
+        } else {
+            String rawPaymentInfo = getResources().getString(R.string.last_payment_info_string);
+            String dateTime = dateTimeFormatter.print(lastPaymentDto.getPaymentDate());
+            paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.getNumberOfClassesPaid());
+        }
+        mLastPaymentInfoText.setText(paymentInfoText);
     }
 }

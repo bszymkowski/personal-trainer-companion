@@ -1,6 +1,6 @@
 package com.szymkowski.personaltrainercompanion.payments;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PaymentDTO {
 
-    private Date paymentDate;
+    private DateTime paymentDate;
     private int numberOfClassesPaid;
 
 }

@@ -27,7 +27,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.j256.ormlite:ormlite-android:4.45'
-    compile 'org.projectlombok:lombok:1.16.6'
+    compile 'joda-time:joda-time:2.9.1'
+
+
+    provided 'org.projectlombok:lombok:1.16.6'
 
     //mapstruct
     compile 'org.mapstruct:mapstruct:1.0.0.Final'

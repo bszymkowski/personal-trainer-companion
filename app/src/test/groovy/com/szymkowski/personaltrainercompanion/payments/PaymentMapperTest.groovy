@@ -2,6 +2,7 @@ package com.szymkowski.personaltrainercompanion.payments
 import android.os.Build
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentMapper
+import org.joda.time.DateTime
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification
 
@@ -12,7 +13,7 @@ class PaymentMapperTest extends GradleRoboSpecification  {
 
     def "should map Payment to PaymentDTO" () {
         given:
-            def date = new Date()
+            def date = new DateTime()
             int numberPaid = 5
             def payment = new Payment(date, numberPaid)
             def paymentDTO
@@ -25,7 +26,7 @@ class PaymentMapperTest extends GradleRoboSpecification  {
 
     def 'should map PaymentDTO to Payment' () {
         given:
-            def date = new Date()
+            def date = new DateTime()
             int numberPaid = 5
             def payment;
             def paymentDTO = new PaymentDTO(date, numberPaid)

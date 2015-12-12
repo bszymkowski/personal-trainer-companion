@@ -2,6 +2,7 @@ package com.szymkowski.personaltrainercompanion.payments
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
+import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification
@@ -21,7 +22,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
     def setupSpec() {
         def database = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class)
         paymentDAO = database.getDao()
-        paymentRepository = new PaymentRepository(database)
+        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
 
     }
 
@@ -31,7 +32,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
 
     def 'get last payment should return last payment dao'() {
         given:
-            def targetDate = new Date()
+            def targetDate = new DateTime()
             def payment = new Payment(targetDate, 8)
             def payment2 = new Payment(targetDate.minus(1), 7)
             def payment3 = new Payment(targetDate.minus(2), 6)
@@ -50,7 +51,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
     //fixme use mocks
     def 'should properly receive DTO and save payment'() {
         given:
-            def date = new Date();
+            def date = new DateTime();
             def payment = new PaymentDTO(date, 8)
         when:
             paymentRepository.addPayment(payment)

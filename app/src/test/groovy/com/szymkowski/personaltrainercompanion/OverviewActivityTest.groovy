@@ -3,10 +3,9 @@ import android.os.Build
 import android.widget.NumberPicker
 import android.widget.TextView
 import com.j256.ormlite.android.apptools.OpenHelperManager
+import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.domain.Database
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.robolectric.Robolectric
@@ -91,8 +90,26 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def dateFormatter = DateTimeFormat.shortDateTime();
             def dateTime = dateFormatter.print(payment.getPaymentDate())
         then:
-            (overviewActivity as AddPaymentDialogCallback).addPayment(payment)
             (overviewActivity.findViewById(R.id.last_payment_info) as TextView).getText() == String.format(RuntimeEnvironment.application.getResources().getString(R.string.last_payment_info_string), dateTime, payment.getNumberOfClassesPaid())
 
     }
+//
+//    def 'should inform that payment was already added on this date'() {
+//        given:
+//            def overviewActivity = controller.get()
+//        when:
+//            overviewActivity.findViewById(R.id.fab_menu).performClick()
+//            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+//            def dialog = ShadowDialog.latestDialog
+//            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+//            overviewActivity.findViewById(R.id.fab_menu).performClick()
+//            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+//            dialog = ShadowDialog.latestDialog
+//            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+//        then:
+//            def confirmDialog = ShadowDialog.latestDialog
+//            confirmDialog.findViewById(R)
+//
+//
+//    }
 }

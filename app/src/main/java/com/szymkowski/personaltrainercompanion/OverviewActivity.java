@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
@@ -19,7 +20,7 @@ import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDia
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class OverviewActivity extends AppCompatActivity implements AddPaymentDialogCallback {
+public class OverviewActivity extends AppCompatActivity implements AddPaymentDialogCallback, RepositoryCallback {
 
     private DateTimeFormatter dateTimeFormatter;
     private static final String TAG = OverviewActivity.class.getSimpleName();
@@ -33,14 +34,14 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mPaymentRepository = new PaymentRepository(this);
+        mPaymentRepository = new PaymentRepository(this, this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
         FloatingActionButton fabAddPayment = (FloatingActionButton) findViewById(R.id.fab_action_add_payment);
         fabAddPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog addPaymentDialog = new AddPaymentDialog(OverviewActivity.this);
+                Dialog addPaymentDialog = new AddPaymentDialog(OverviewActivity.this, OverviewActivity.this);
                 addPaymentDialog.show();
             }
         });
@@ -84,7 +85,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     }
 
     private void updateLastPayment() {
-        PaymentDTO lastPaymentDto = mPaymentRepository.getLastPayment();
+        PaymentDTO lastPaymentDto = mPaymentRepository.getLastPaymentDTO();
         String paymentInfoText;
         if (lastPaymentDto == null) {
             paymentInfoText = getResources().getString(R.string.no_payment_found);
@@ -94,5 +95,10 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
             paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.getNumberOfClassesPaid());
         }
         mLastPaymentInfoText.setText(paymentInfoText);
+    }
+
+    @Override
+    public void onPaymentAlreadyAdded(PaymentDTO paymentDTO) {
+        //// TODO: 13.12.2015  
     }
 }

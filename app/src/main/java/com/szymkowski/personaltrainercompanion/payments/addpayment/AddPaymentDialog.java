@@ -3,7 +3,6 @@ package com.szymkowski.personaltrainercompanion.payments.addpayment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -28,13 +27,9 @@ public class AddPaymentDialog extends Dialog {
     //// TODO: 12.12.2015 move this to preferences
     private static final int ADD_PAYMENT_DEFAULT = 8;
 
-    public AddPaymentDialog(Context context) {
+    public AddPaymentDialog(Context context, AddPaymentDialogCallback callback) {
         super(context);
-        try {
-            callback = (AddPaymentDialogCallback) context;
-        } catch (ClassCastException exception) {
-            Log.e(TAG, "Exception when attempting to cast activity into dialog callback!");
-        }
+        this.callback = callback;
     }
 
     @Override

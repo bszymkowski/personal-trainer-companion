@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.szymkowski.personaltrainercompanion.R;
-import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
+import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 
 import org.joda.time.DateTime;
 

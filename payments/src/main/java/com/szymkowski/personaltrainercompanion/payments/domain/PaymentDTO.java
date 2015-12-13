@@ -1,4 +1,4 @@
-package com.szymkowski.personaltrainercompanion.payments;
+package com.szymkowski.personaltrainercompanion.payments.domain;
 
 import org.joda.time.DateTime;
 

@@ -1,4 +1,4 @@
-package com.szymkowski.personaltrainercompanion.payments
+package com.szymkowski.personaltrainercompanion.payments.domain
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
@@ -20,8 +20,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
     }
 
     def setupSpec() {
-        def database = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class)
-        paymentDAO = database.getDao()
+        paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao()
         paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
 
     }

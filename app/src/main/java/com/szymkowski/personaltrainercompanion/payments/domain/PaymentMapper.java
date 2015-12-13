@@ -1,7 +1,4 @@
-package com.szymkowski.personaltrainercompanion.payments.domain.dto;
-
-import com.szymkowski.personaltrainercompanion.payments.Payment;
-import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
+package com.szymkowski.personaltrainercompanion.payments.domain;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

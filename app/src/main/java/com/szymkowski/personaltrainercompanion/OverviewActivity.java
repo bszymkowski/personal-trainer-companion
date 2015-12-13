@@ -11,8 +11,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
-import com.szymkowski.personaltrainercompanion.payments.PaymentRepository;
+import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
+import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback;
 

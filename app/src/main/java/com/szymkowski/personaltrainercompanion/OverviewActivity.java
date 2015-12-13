@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
@@ -40,12 +41,14 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         mPaymentRepository = new PaymentRepository(this, this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
+        final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         FloatingActionButton fabAddPayment = (FloatingActionButton) findViewById(R.id.fab_action_add_payment);
         fabAddPayment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Dialog addPaymentDialog = new AddPaymentDialog(OverviewActivity.this, OverviewActivity.this);
                 addPaymentDialog.show();
+                floatingActionsMenu.collapse();
             }
         });
 

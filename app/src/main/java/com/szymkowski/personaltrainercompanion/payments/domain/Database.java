@@ -1,4 +1,4 @@
-package com.szymkowski.personaltrainercompanion.payments;
+package com.szymkowski.personaltrainercompanion.payments.domain;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,13 +10,13 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
-    import java.sql.SQLException;
+import java.sql.SQLException;
 
 /**
      * Database helper class used to manage the creation and upgrading of your database. This class also usually provides
      * the DAOs used by the other classes.
      */
-    class Database extends OrmLiteSqliteOpenHelper {
+    public class Database extends OrmLiteSqliteOpenHelper {
 
         // name of the database file for your application -- change to something appropriate for your app
         private static final String DATABASE_NAME = "personal_trainer_companion.db";

@@ -9,7 +9,7 @@ import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.szymkowski.personaltrainercompanion.R;
-import com.szymkowski.personaltrainercompanion.payments.PaymentDTO;
+import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 
 import org.joda.time.DateTime;
 
@@ -21,20 +21,16 @@ public class AddPaymentDialog extends Dialog {
     private NumberPicker addPaymentNumberPicker;
 
 
-    private AddPaymentDialogCallback callback;
+    private final AddPaymentDialogCallback callback;
 
     //// TODO: 12.12.2015 move this to preferences
     private static final int ADD_PAYMENT_MAX = 8;
     //// TODO: 12.12.2015 move this to preferences
     private static final int ADD_PAYMENT_DEFAULT = 8;
 
-    public AddPaymentDialog(Context context) {
+    public AddPaymentDialog(Context context, AddPaymentDialogCallback callback) {
         super(context);
-        try {
-            callback = (AddPaymentDialogCallback) context;
-        } catch (ClassCastException exception) {
-            Log.e(TAG, "Exception when attempting to cast activity into dialog callback!");
-        }
+        this.callback = callback;
     }
 
     @Override
@@ -52,6 +48,7 @@ public class AddPaymentDialog extends Dialog {
         negativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, "Dialog cancelled");
                 dismiss();
             }
         });
@@ -61,9 +58,11 @@ public class AddPaymentDialog extends Dialog {
             public void onClick(View v) {
                 PaymentDTO dto= new PaymentDTO(new DateTime(), addPaymentNumberPicker.getValue());
                 callback.addPayment(dto);
+                Log.i(TAG, "Payment added, date: " + dto.getPaymentDate().toString() + "for " + dto.getNumberOfClassesPaid() + "classes.");
                 dismiss();
             }
         });
+        Log.i(TAG, "Dialog created");
 
     }
 }

@@ -6,4 +6,7 @@
     <string name="fab_add_payment">Payment</string>
     <string formatted="false" name="last_payment_info_string">%s for %d classes.</string>
     <string name="numer_of_classes_hint">Set number of classes:</string>
+    <string name="payment_already_added_today_title">Payment with this date already added!</string>
+    <string name="payment_already_added_today_message">A payment has already been added today. Do you want to add another?</string>
+    <string name="date_time_format">dd/MMM/yyyy</string>
 </resources>

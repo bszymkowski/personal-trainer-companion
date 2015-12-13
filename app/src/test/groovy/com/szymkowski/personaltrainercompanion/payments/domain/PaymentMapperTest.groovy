@@ -1,7 +1,6 @@
-package com.szymkowski.personaltrainercompanion.payments
+package com.szymkowski.personaltrainercompanion.payments.domain
 import android.os.Build
 import com.szymkowski.personaltrainercompanion.BuildConfig
-import com.szymkowski.personaltrainercompanion.payments.domain.dto.PaymentMapper
 import org.joda.time.DateTime
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification

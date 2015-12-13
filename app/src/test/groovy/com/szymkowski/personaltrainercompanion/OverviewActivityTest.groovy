@@ -90,7 +90,7 @@ class OverviewActivityTest extends GradleRoboSpecification {
         when:
             def payment = new PaymentDTO(new DateTime(), (dialog.findViewById(R.id.add_payment_dialog_number_picker) as NumberPicker).getValue())
             dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
-            def dateFormatter = DateTimeFormat.shortDateTime();
+            def dateFormatter = DateTimeFormat.forPattern(RuntimeEnvironment.application.getResources().getString(R.string.date_time_format)).withLocale(Locale.getDefault());
             def dateTime = dateFormatter.print(payment.getPaymentDate())
         then:
             (overviewActivity.findViewById(R.id.last_payment_info) as TextView).getText() == String.format(RuntimeEnvironment.application.getResources().getString(R.string.last_payment_info_string), dateTime, payment.getNumberOfClassesPaid())

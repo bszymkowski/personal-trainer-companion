@@ -13,18 +13,19 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
+import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.util.Locale;
+
 public class OverviewActivity extends AppCompatActivity implements AddPaymentDialogCallback, RepositoryCallback {
 
-    private DateTimeFormatter dateTimeFormatter;
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private TextView mLastPaymentInfoText;
 
@@ -47,7 +48,6 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
                 addPaymentDialog.show();
             }
         });
-        dateTimeFormatter = DateTimeFormat.shortDateTime();
 
         Log.i(TAG, "Activity created");
     }
@@ -93,6 +93,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
             paymentInfoText = getResources().getString(R.string.no_payment_found);
         } else {
             String rawPaymentInfo = getResources().getString(R.string.last_payment_info_string);
+            DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(getResources().getString(R.string.date_time_format)).withLocale(Locale.getDefault());
             String dateTime = dateTimeFormatter.print(lastPaymentDto.getPaymentDate());
             paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.getNumberOfClassesPaid());
         }

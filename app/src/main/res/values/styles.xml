@@ -19,9 +19,8 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="button_style" parent="android:Widget.Material.Button.Borderless">
-        <item name="android:background">@color/colorPrimaryDark</item>
+    <style name="text_base_one" parent="TextAppearance.AppCompat.Body1"></style>
 
-    </style>
+    <style name="text_base_two" parent="TextAppearance.AppCompat.Body2"></style>
 
 </resources>

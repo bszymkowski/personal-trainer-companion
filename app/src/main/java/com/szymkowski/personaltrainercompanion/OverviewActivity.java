@@ -1,6 +1,8 @@
 package com.szymkowski.personaltrainercompanion;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,7 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
-import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback;
+import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
@@ -98,7 +100,24 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     }
 
     @Override
-    public void onPaymentAlreadyAdded(PaymentDTO paymentDTO) {
-        //// TODO: 13.12.2015  
+    public void onPaymentAlreadyAdded(final PaymentDTO paymentDTO) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.payment_already_added_today_title);
+        builder.setMessage(R.string.payment_already_added_today_message);
+        builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mPaymentRepository.confirmAdd(paymentDTO);
+                updateLastPayment();
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }

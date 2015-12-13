@@ -1,4 +1,6 @@
 package com.szymkowski.personaltrainercompanion
+
+import android.app.AlertDialog
 import android.os.Build
 import android.widget.NumberPicker
 import android.widget.TextView
@@ -11,6 +13,7 @@ import org.joda.time.format.DateTimeFormat
 import org.robolectric.Robolectric
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowAlertDialog
 import org.robolectric.shadows.ShadowDialog
 import pl.polidea.robospock.GradleRoboSpecification
 import spock.lang.Shared
@@ -93,23 +96,27 @@ class OverviewActivityTest extends GradleRoboSpecification {
             (overviewActivity.findViewById(R.id.last_payment_info) as TextView).getText() == String.format(RuntimeEnvironment.application.getResources().getString(R.string.last_payment_info_string), dateTime, payment.getNumberOfClassesPaid())
 
     }
-//
-//    def 'should inform that payment was already added on this date'() {
-//        given:
-//            def overviewActivity = controller.get()
-//        when:
-//            overviewActivity.findViewById(R.id.fab_menu).performClick()
-//            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
-//            def dialog = ShadowDialog.latestDialog
-//            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
-//            overviewActivity.findViewById(R.id.fab_menu).performClick()
-//            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
-//            dialog = ShadowDialog.latestDialog
-//            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
-//        then:
-//            def confirmDialog = ShadowDialog.latestDialog
-//            confirmDialog.findViewById(R)
-//
-//
-//    }
+
+    def 'should inform that payment was already added on this date'() {
+        given:
+            def overviewActivity = controller.get()
+        when:
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            def dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+            def confirmDialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            confirmDialog != null
+        when:
+            confirmDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            paymentDAO.queryForAll().size() == 2
+
+
+    }
 }

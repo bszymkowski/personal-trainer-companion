@@ -2,7 +2,7 @@ package com.szymkowski.personaltrainercompanion.payments.domain
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
-import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback
+import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config

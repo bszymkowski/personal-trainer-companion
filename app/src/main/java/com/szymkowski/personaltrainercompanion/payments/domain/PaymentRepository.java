@@ -7,7 +7,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback;
+import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
 
 import org.joda.time.DateTimeComparator;
 
@@ -52,8 +52,7 @@ public class PaymentRepository {
         if (previous == null) {
             return false;
         }
-        return DateTimeComparator.getDateOnlyInstance().compare(current.getPaymentDate(), previous.getPaymentDate()) ==0;
-
+        return DateTimeComparator.getDateOnlyInstance().compare(current.getPaymentDate(), previous.getPaymentDate()) == 0;
     }
 
     public PaymentDTO getLastPaymentDTO() {
@@ -91,5 +90,20 @@ public class PaymentRepository {
             Log.e(TAG, "SQLite exception when accessing Payments database!");
             return null;
         }
+    }
+
+    public void confirmAdd(PaymentDTO paymentDTO) {
+        Dao<Payment, Long> paymentLongDao = getDao();
+        if (paymentLongDao==null) {
+            return;
+        }
+        Payment payment = paymentMapper.paymentDTOToPayment(paymentDTO);
+
+        try {
+            paymentLongDao.create(payment);
+        } catch (SQLException e) {
+            Log.e(TAG, "SQLite exception in adding payment data. Exception: " + e.getMessage());
+        }
+        OpenHelperManager.releaseHelper();
     }
 }

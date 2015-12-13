@@ -49,10 +49,7 @@ public class PaymentRepository {
     }
 
     private boolean isPaymentOnSameDay(Payment current, Payment previous) {
-        if (previous == null) {
-            return false;
-        }
-        return DateTimeComparator.getDateOnlyInstance().compare(current.getPaymentDate(), previous.getPaymentDate()) == 0;
+        return previous != null && DateTimeComparator.getDateOnlyInstance().compare(current.getPaymentDate(), previous.getPaymentDate()) == 0;
     }
 
     public PaymentDTO getLastPaymentDTO() {
@@ -67,6 +64,7 @@ public class PaymentRepository {
         if (paymentLongDao==null) {
             return null;
         }
+        //noinspection unchecked
         List<Payment> payments = Collections.EMPTY_LIST;
         QueryBuilder<Payment, Long> builder = paymentLongDao.queryBuilder();
         builder.orderBy(Payment.PAYMENT_DATE_COLUMN, false).limit(1L);
@@ -79,8 +77,7 @@ public class PaymentRepository {
         if (payments.isEmpty()) {
             return null;
         }
-        Payment lastPayment= payments.iterator().next();
-        return lastPayment;
+        return payments.iterator().next();
     }
 
     private Dao<Payment, Long> getDao() {

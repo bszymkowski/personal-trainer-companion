@@ -3,6 +3,7 @@ package com.szymkowski.personaltrainercompanion.payments.addpayment;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.NumberPicker;
@@ -20,7 +21,7 @@ public class AddPaymentDialog extends Dialog {
     private NumberPicker addPaymentNumberPicker;
 
 
-    private AddPaymentDialogCallback callback;
+    private final AddPaymentDialogCallback callback;
 
     //// TODO: 12.12.2015 move this to preferences
     private static final int ADD_PAYMENT_MAX = 8;
@@ -47,6 +48,7 @@ public class AddPaymentDialog extends Dialog {
         negativeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, "Dialog cancelled");
                 dismiss();
             }
         });
@@ -56,9 +58,11 @@ public class AddPaymentDialog extends Dialog {
             public void onClick(View v) {
                 PaymentDTO dto= new PaymentDTO(new DateTime(), addPaymentNumberPicker.getValue());
                 callback.addPayment(dto);
+                Log.i(TAG, "Payment added, date: " + dto.getPaymentDate().toString() + "for " + dto.getNumberOfClassesPaid() + "classes.");
                 dismiss();
             }
         });
+        Log.i(TAG, "Dialog created");
 
     }
 }

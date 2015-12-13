@@ -97,7 +97,7 @@ class OverviewActivityTest extends GradleRoboSpecification {
 
     }
 
-    def 'should inform that payment was already added on this date'() {
+    def 'should inform that payment was already added on this date and not add if "cancel" clicked'() {
         given:
             def overviewActivity = controller.get()
         when:
@@ -112,11 +112,34 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def confirmDialog = ShadowAlertDialog.latestAlertDialog
         then:
             confirmDialog != null
+            confirmDialog.showing
+        when:
+            confirmDialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick()
+        then:
+            !confirmDialog.showing
+            paymentDAO.queryForAll().size() == 1
+    }
+
+    def 'should inform that payment was already added on this date and add if "ok" clicked'() {
+        given:
+            def overviewActivity = controller.get()
+        when:
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            def dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+            def confirmDialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            confirmDialog != null
+            confirmDialog.showing
         when:
             confirmDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         then:
             paymentDAO.queryForAll().size() == 2
-
 
     }
 }

@@ -31,7 +31,7 @@ public class Database extends OrmLiteSqliteOpenHelper implements DbCore{
     public Database(Context context) {
         //// FIXME: 06.12.2015 add config file
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        createCollaboratorsList();  
+        createCollaboratorsList();
     }
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {

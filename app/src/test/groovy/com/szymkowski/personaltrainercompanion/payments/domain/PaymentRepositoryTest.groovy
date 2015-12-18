@@ -1,4 +1,6 @@
 package com.szymkowski.personaltrainercompanion.payments.domain
+
+import android.database.sqlite.SQLiteException
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
@@ -14,7 +16,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
 
 
     @Shared def paymentDAO
-    @Shared def paymentRepository
+    @Shared PaymentRepository paymentRepository
     @Shared def repoCallback
 
     def setup() {
@@ -88,6 +90,22 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
         then:
             0 * repoCallback.onPaymentAlreadyAdded(payment2)
 
+
+    }
+
+    def 'should correctly obtain total number of classes paid for'() {
+        given:
+            def payment1 = new PaymentDTO(new DateTime(), 5)
+            def payment2 = new PaymentDTO(new DateTime().minusWeeks(1), 8)
+            def payment3 = new PaymentDTO(new DateTime().minusWeeks(2), 8)
+            paymentRepository.addPayment(payment1)
+            paymentRepository.addPayment(payment2)
+            paymentRepository.addPayment(payment3)
+        when:
+            int result = paymentRepository.numberOfTrainingsPaidFor
+        then:
+            notThrown(SQLiteException)
+            result == 21
 
     }
 

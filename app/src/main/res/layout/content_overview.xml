@@ -8,7 +8,7 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_overview" tools:context=".Overview"
-    android:orientation="horizontal">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,4 +25,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/main_activity_text_padding">
+        <TextView android:text="@string/remaining_classes_info"
+            style="@style/text_base_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingEnd="@dimen/main_activity_text_padding"/>
+        <TextView
+            style="@style/text_base_one"
+            android:id="@+id/number_of_classes_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
 </LinearLayout>
+
+

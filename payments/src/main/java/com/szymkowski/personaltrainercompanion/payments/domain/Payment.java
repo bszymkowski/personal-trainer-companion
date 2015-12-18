@@ -12,8 +12,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
-@DatabaseTable
+@DatabaseTable(tableName = Payment.TABLE_NAME)
 class Payment {
+    public static final String TABLE_NAME = "table_payments";
     public static final String PAYMENT_DATE_COLUMN = "payment_date";
     public static final String NUMBER_OF_CLASSES_PAID_COLUMN = "number_of_classes_paid";
     @DatabaseField(generatedId = true)

@@ -9,4 +9,6 @@
     <string name="payment_already_added_today_title">Payment with this date already added!</string>
     <string name="payment_already_added_today_message">A payment has already been added today. Do you want to add another?</string>
     <string name="date_time_format">dd/MMM/yyyy</string>
+    <string name="remaining_classes_info">Trainings remaining:</string>
+    <string formatted="false" name="number_format_string">%d</string>
 </resources>

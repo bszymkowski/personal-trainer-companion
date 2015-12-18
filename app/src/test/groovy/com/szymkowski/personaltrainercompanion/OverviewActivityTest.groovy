@@ -1,5 +1,4 @@
 package com.szymkowski.personaltrainercompanion
-
 import android.app.AlertDialog
 import android.os.Build
 import android.widget.NumberPicker
@@ -142,4 +141,21 @@ class OverviewActivityTest extends GradleRoboSpecification {
             paymentDAO.queryForAll().size() == 2
 
     }
+
+    def 'should correctly display number of trainings paid for and update when added'() {
+        given:
+            def overviewActivity = controller.get()
+        when:
+            def numberRemaining = overviewActivity.findViewById(R.id.number_of_classes_remaining).getText()
+        then:
+            numberRemaining == 0 as String
+        when:
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            def dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+        then:
+            overviewActivity.findViewById(R.id.number_of_classes_remaining).getText() == 8 as String
+    }
+
 }

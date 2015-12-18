@@ -2,6 +2,7 @@ package com.szymkowski.personaltrainercompanion.trainings.domain
 
 import android.os.Build
 import com.szymkowski.personaltrainercompanion.BuildConfig
+import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider
 import org.robolectric.annotation.Config
 import pl.polidea.robospock.GradleRoboSpecification
 

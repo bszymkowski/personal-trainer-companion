@@ -19,6 +19,7 @@ import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDia
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
+import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsRepository;
 
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -31,6 +32,8 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     private TextView mLastPaymentInfoText;
 
     private PaymentRepository mPaymentRepository;
+    private TrainingsRepository mTrainingsRepository;
+    private TextView mNumberOfTrainingsInfoText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +43,9 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         setSupportActionBar(toolbar);
         mPaymentRepository = new PaymentRepository(this, this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
+
+        mTrainingsRepository = new TrainingsRepository(mPaymentRepository);
+        mNumberOfTrainingsInfoText = (TextView) findViewById(R.id.number_of_classes_remaining);
 
         final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         FloatingActionButton fabAddPayment = (FloatingActionButton) findViewById(R.id.fab_action_add_payment);
@@ -59,6 +65,11 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     protected void onResume() {
         super.onResume();
         updateLastPayment();
+        updateNumberOfTrainingsRemaining();
+    }
+
+    private void updateNumberOfTrainingsRemaining() {
+        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string) ,mTrainingsRepository.getNumberOfClassesRemaining()));
     }
 
     @Override
@@ -101,6 +112,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
             paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.getNumberOfClassesPaid());
         }
         mLastPaymentInfoText.setText(paymentInfoText);
+        updateNumberOfTrainingsRemaining();
     }
 
     @Override

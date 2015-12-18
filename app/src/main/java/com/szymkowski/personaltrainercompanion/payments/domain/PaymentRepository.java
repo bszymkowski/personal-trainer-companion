@@ -8,6 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
+import com.szymkowski.personaltrainercompanion.trainings.domain.PaidNumberOfTrainingsProvider;
 
 import org.joda.time.DateTimeComparator;
 
@@ -16,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PaymentRepository {
+public class PaymentRepository implements PaidNumberOfTrainingsProvider {
 
     private static final String TAG = PaymentRepository.class.getSimpleName();
     private final Context context;
@@ -102,5 +103,21 @@ public class PaymentRepository {
             Log.e(TAG, "SQLite exception in adding payment data. Exception: " + e.getMessage());
         }
         OpenHelperManager.releaseHelper();
+    }
+
+    @Override
+    public int getNumberOfTrainingsPaidFor() {
+        Dao<Payment, Long> paymentLongDao = getDao();
+        int result = 0;
+        try {
+            List<Payment> allPayments = paymentLongDao.queryForAll();
+            for (Payment payment : allPayments) {
+                result += payment.getNumberOfClassesPaid();
+            }
+        } catch (SQLException e) {
+            Log.e(TAG, "SQLite exception in counting total number of classes paid. Exception: " + e.getMessage());
+        }
+        OpenHelperManager.releaseHelper();
+        return result;
     }
 }

@@ -7,6 +7,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.szymkowski.personaltrainercompanion.core.Database;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
 
@@ -83,7 +84,7 @@ public class PaymentRepository implements PaidNumberOfTrainingsProvider {
 
     private Dao<Payment, Long> getDao() {
         try {
-            return OpenHelperManager.getHelper(context, Database.class).getDao();
+            return OpenHelperManager.getHelper(context, Database.class).getDao(Payment.class);
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception when accessing Payments database!");
             return null;

@@ -4,6 +4,7 @@ import android.database.sqlite.SQLiteException
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
+import com.szymkowski.personaltrainercompanion.core.Database
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
@@ -24,7 +25,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
     }
 
     def setupSpec() {
-        paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao()
+        paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao(Payment.class)
         repoCallback = Mock(RepositoryCallback)
         paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
     }

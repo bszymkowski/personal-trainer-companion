@@ -5,8 +5,8 @@ import android.widget.NumberPicker
 import android.widget.TextView
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog
-import com.szymkowski.personaltrainercompanion.payments.domain.Database
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
+import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDaoHelper
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.robolectric.Robolectric
@@ -37,7 +37,8 @@ class OverviewActivityTest extends GradleRoboSpecification {
     }
 
     def setupSpec() {
-        paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao()
+
+        paymentDAO = PaymentDaoHelper.getPaymentsDao()
     }
 
     def cleanupSpec() {

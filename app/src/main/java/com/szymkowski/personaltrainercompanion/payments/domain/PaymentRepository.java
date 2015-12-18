@@ -8,7 +8,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
-import com.szymkowski.personaltrainercompanion.trainings.domain.PaidNumberOfTrainingsProvider;
+import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
 
 import org.joda.time.DateTimeComparator;
 

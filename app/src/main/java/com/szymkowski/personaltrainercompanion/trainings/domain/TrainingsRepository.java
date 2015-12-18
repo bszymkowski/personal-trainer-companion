@@ -1,5 +1,7 @@
 package com.szymkowski.personaltrainercompanion.trainings.domain;
 
+import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor(suppressConstructorProperties = true)

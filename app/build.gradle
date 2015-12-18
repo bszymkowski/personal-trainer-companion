@@ -39,7 +39,7 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
     testCompile 'org.robospock:robospock:0.8.0'
-    compile project(':payments')
+    compile project(':domains')
 }
 
 

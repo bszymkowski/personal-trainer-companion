@@ -9,6 +9,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDomainHelper;
+import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingDomainHelper;
 
 import java.sql.SQLException;
 import java.util.HashSet;
@@ -18,18 +19,19 @@ public class Database extends OrmLiteSqliteOpenHelper implements DbCore{
 
     private static final Set<DbCollaborator> DB_COLLABORATORS = new HashSet<>();
 
-    // name of the database file for your application -- change to something appropriate for your app
+    //yes, it is a bad practice to put private methods so high up. It's justified here.
+    private void createCollaboratorsList() {
+        DB_COLLABORATORS.add(new TrainingDomainHelper(this));
+        DB_COLLABORATORS.add(new PaymentDomainHelper(this));
+    }
+
     private static final String DATABASE_NAME = "personal_trainer_companion.db";
-    // any time you make changes to your database objects, you may have to increase the database version
     private static final int DATABASE_VERSION = 1;
-
-
 
     public Database(Context context) {
         //// FIXME: 06.12.2015 add config file
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
-        DB_COLLABORATORS.add(new PaymentDomainHelper(this));
+        createCollaboratorsList();  
     }
     @Override
     public void onCreate(SQLiteDatabase database, ConnectionSource connectionSource) {

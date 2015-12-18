@@ -3,7 +3,6 @@ package com.szymkowski.personaltrainercompanion.payments.domain;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.j256.ormlite.android.AndroidConnectionSource;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
@@ -24,34 +23,8 @@ import java.sql.SQLException;
             this.dbCore = dbCore;
         }
 
-        /**
-         * Returns the PaymentDomainHelper Access Object (DAO) for our SimpleData class. It will create it or just give the cached
-         * value.
-         */
-        public Dao<Payment, Long> getDao() throws SQLException {
-            if (simpleDao == null) {
-                simpleDao = dbCore.getDomainDao(Payment.class);
-            }
-            return simpleDao;
-        }
-
-        /**
-         * Returns the RuntimeExceptionDao (PaymentDomainHelper Access Object) version of a Dao for our SimpleData class. It will
-         * create it or just give the cached value. RuntimeExceptionDao only through RuntimeExceptions.
-         */
-        public RuntimeExceptionDao<Payment, Long> getPaymentsDao() {
-            if (simpleRuntimeDao == null) {
-                simpleRuntimeDao = dbCore.getDomainRuntimeExceptionDao(Payment.class);
-            }
-            return simpleRuntimeDao;
-        }
-
-        /**
-         * Close the database connections and clear any cached DAOs.
-         * @param connectionSource
-         */
         @Override
-        public void closeDomainDb(AndroidConnectionSource connectionSource) {
+        public void closeDomainDb(ConnectionSource connectionSource) {
             simpleDao = null;
             simpleRuntimeDao = null;
         }

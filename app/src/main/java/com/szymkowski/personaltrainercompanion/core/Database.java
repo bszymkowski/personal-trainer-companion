@@ -21,8 +21,8 @@ public class Database extends OrmLiteSqliteOpenHelper implements DbCore{
 
     //yes, it is a bad practice to put private methods so high up. It's justified here.
     private void createCollaboratorsList() {
-        DB_COLLABORATORS.add(new TrainingDomainHelper(this));
-        DB_COLLABORATORS.add(new PaymentDomainHelper(this));
+        DB_COLLABORATORS.add(new TrainingDomainHelper());
+        DB_COLLABORATORS.add(new PaymentDomainHelper());
     }
 
     private static final String DATABASE_NAME = "personal_trainer_companion.db";
@@ -44,7 +44,6 @@ public class Database extends OrmLiteSqliteOpenHelper implements DbCore{
             Log.e(Database.class.getName(), "Can't create database", e);
             throw new RuntimeException(e);
         }
-
     }
 
     @Override
@@ -63,14 +62,6 @@ public class Database extends OrmLiteSqliteOpenHelper implements DbCore{
     @Override
     public Dao getDomainDao(Class<?> klazz)throws SQLException {
         return getDao(klazz);
-    }
-
-    @Override
-    public void close() {
-        super.close();
-        for (DbCollaborator collaborator : DB_COLLABORATORS) {
-            collaborator.closeDomainDb(connectionSource);
-        }
     }
 
     @Override

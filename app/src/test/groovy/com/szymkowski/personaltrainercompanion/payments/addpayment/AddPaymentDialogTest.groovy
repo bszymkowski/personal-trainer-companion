@@ -1,14 +1,18 @@
 package com.szymkowski.personaltrainercompanion.payments.addpayment
+
 import android.os.Build
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import com.szymkowski.personaltrainercompanion.R
+import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
+import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialogCallback
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowDialog
-import pl.polidea.robospock.GradleRoboSpecification
+import org.robospock.GradleRoboSpecification
 
-@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.KITKAT)
+
+@Config(constants = BuildConfig, sdk= Build.VERSION_CODES.LOLLIPOP)
 class AddPaymentDialogTest extends GradleRoboSpecification {
 
     def 'should call callback method addPayment when payment added'() {

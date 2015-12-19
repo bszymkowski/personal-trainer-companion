@@ -9,6 +9,11 @@ import com.j256.ormlite.table.TableUtils;
 import java.lang.reflect.ParameterizedType;
 import java.sql.SQLException;
 
+/*
+This whole byzantine construct only serves to prevent domain entity objects from flying around the whole application.
+I want them only available from their packages.
+ */
+
 public abstract class DbCollaborator<T> {
 
     private final Class klazz;
@@ -24,8 +29,6 @@ public abstract class DbCollaborator<T> {
     }
 
 
-    public void upgradeTable(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) throws SQLException {
-        throw new RuntimeException("not implemented!");
-    }
+    public abstract void upgradeTable(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) throws SQLException;
 
 }

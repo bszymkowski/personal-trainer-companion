@@ -14,9 +14,9 @@ import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog;
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialogCallback;
-import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
+import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog;
+import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialogCallback;
+import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
 import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsRepository;
@@ -44,7 +44,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         mPaymentRepository = new PaymentRepository(this, this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
-        mTrainingsRepository = new TrainingsRepository(mPaymentRepository);
+        mTrainingsRepository = new TrainingsRepository(this, mPaymentRepository);
         mNumberOfTrainingsInfoText = (TextView) findViewById(R.id.number_of_classes_remaining);
 
         final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
@@ -69,7 +69,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     }
 
     private void updateNumberOfTrainingsRemaining() {
-        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string) ,mTrainingsRepository.getNumberOfClassesRemaining()));
+        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string) ,mTrainingsRepository.getNumberOfTrainingsRemaining()));
     }
 
     @Override
@@ -129,7 +129,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mPaymentRepository.confirmAdd(paymentDTO);
+                mPaymentRepository.addPaymentWhenSameDateExists(paymentDTO);
                 updateLastPayment();
                 dialog.dismiss();
             }

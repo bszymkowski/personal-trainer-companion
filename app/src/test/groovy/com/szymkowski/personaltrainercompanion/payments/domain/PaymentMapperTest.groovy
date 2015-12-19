@@ -1,11 +1,12 @@
 package com.szymkowski.personaltrainercompanion.payments.domain
+
 import android.os.Build
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import org.joda.time.DateTime
 import org.robolectric.annotation.Config
-import pl.polidea.robospock.GradleRoboSpecification
+import org.robospock.GradleRoboSpecification
 
-@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.KITKAT)
+@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.LOLLIPOP)
 class PaymentMapperTest extends GradleRoboSpecification  {
 
     def mapper = PaymentMapper.INSTANCE;

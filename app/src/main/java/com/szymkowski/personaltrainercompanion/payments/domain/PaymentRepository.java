@@ -3,12 +3,11 @@ package com.szymkowski.personaltrainercompanion.payments.domain;
 import android.content.Context;
 import android.util.Log;
 
-import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
-import com.szymkowski.personaltrainercompanion.core.Database;
-import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback;
+import com.szymkowski.personaltrainercompanion.core.BaseRepository;
+import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
 
 import org.joda.time.DateTimeComparator;
@@ -18,15 +17,14 @@ import java.util.Collections;
 import java.util.List;
 
 
-public class PaymentRepository implements PaidNumberOfTrainingsProvider {
+public class PaymentRepository extends BaseRepository<Payment, Long> implements PaidNumberOfTrainingsProvider {
 
     private static final String TAG = PaymentRepository.class.getSimpleName();
-    private final Context context;
     private final PaymentMapper paymentMapper = PaymentMapper.INSTANCE;
     private final RepositoryCallback repositoryCallback;
 
     public PaymentRepository(Context context, RepositoryCallback repositoryCallback) {
-        this.context = context;
+        super(context);
         this.repositoryCallback = repositoryCallback;
     }
 
@@ -39,15 +37,16 @@ public class PaymentRepository implements PaidNumberOfTrainingsProvider {
         Payment previous = getLastPayment(paymentLongDao);
         if (isPaymentOnSameDay(payment, previous)) {
             repositoryCallback.onPaymentAlreadyAdded(paymentDTO);
-            OpenHelperManager.releaseHelper();
+            close();
             return;
         }
         try {
             paymentLongDao.create(payment);
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception in adding payment data. Exception: " + e.getMessage());
+        } finally {
+            close();
         }
-        OpenHelperManager.releaseHelper();
     }
 
     private boolean isPaymentOnSameDay(Payment current, Payment previous) {
@@ -58,7 +57,7 @@ public class PaymentRepository implements PaidNumberOfTrainingsProvider {
         Dao<Payment, Long> paymentLongDao = getDao();
         Payment lastPayment = getLastPayment(paymentLongDao);
         PaymentDTO result = paymentMapper.paymentToPaymentDTO(lastPayment);
-        OpenHelperManager.releaseHelper();
+        close();
         return result;
     }
 
@@ -82,16 +81,7 @@ public class PaymentRepository implements PaidNumberOfTrainingsProvider {
         return payments.iterator().next();
     }
 
-    private Dao<Payment, Long> getDao() {
-        try {
-            return OpenHelperManager.getHelper(context, Database.class).getDao(Payment.class);
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLite exception when accessing Payments database!");
-            return null;
-        }
-    }
-
-    public void confirmAdd(PaymentDTO paymentDTO) {
+    public void addPaymentWhenSameDateExists(PaymentDTO paymentDTO) {
         Dao<Payment, Long> paymentLongDao = getDao();
         if (paymentLongDao==null) {
             return;
@@ -103,7 +93,7 @@ public class PaymentRepository implements PaidNumberOfTrainingsProvider {
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception in adding payment data. Exception: " + e.getMessage());
         }
-        OpenHelperManager.releaseHelper();
+        close();
     }
 
     @Override
@@ -118,7 +108,7 @@ public class PaymentRepository implements PaidNumberOfTrainingsProvider {
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception in counting total number of classes paid. Exception: " + e.getMessage());
         }
-        OpenHelperManager.releaseHelper();
+        close();
         return result;
     }
 }

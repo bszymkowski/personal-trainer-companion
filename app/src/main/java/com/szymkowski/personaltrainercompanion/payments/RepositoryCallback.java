@@ -1,4 +1,4 @@
-package com.szymkowski.personaltrainercompanion.payments.addpayment;
+package com.szymkowski.personaltrainercompanion.payments;
 
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 

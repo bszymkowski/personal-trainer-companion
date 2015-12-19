@@ -4,7 +4,7 @@ import android.os.Build
 import android.widget.NumberPicker
 import android.widget.TextView
 import com.j256.ormlite.android.apptools.OpenHelperManager
-import com.szymkowski.personaltrainercompanion.payments.addpayment.AddPaymentDialog
+import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDaoHelper
 import org.joda.time.DateTime
@@ -14,10 +14,10 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowAlertDialog
 import org.robolectric.shadows.ShadowDialog
-import pl.polidea.robospock.GradleRoboSpecification
+import org.robospock.GradleRoboSpecification
 import spock.lang.Shared
 
-@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.KITKAT)
+@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.LOLLIPOP)
 class OverviewActivityTest extends GradleRoboSpecification {
 
     @Shared def paymentDAO;

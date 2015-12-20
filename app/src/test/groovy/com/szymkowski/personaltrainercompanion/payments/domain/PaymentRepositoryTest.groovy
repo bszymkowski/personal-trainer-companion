@@ -4,10 +4,11 @@ import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import com.szymkowski.personaltrainercompanion.core.Database
-import com.szymkowski.personaltrainercompanion.payments.RepositoryCallback
+
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowAlertDialog
 import org.robospock.GradleRoboSpecification
 import spock.lang.Shared
 
@@ -17,16 +18,15 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
 
     @Shared def paymentDAO
     @Shared PaymentRepository paymentRepository
-    @Shared def repoCallback
 
     def setup() {
         paymentDAO.delete(paymentDAO.queryForAll())
+        ShadowAlertDialog.reset()
     }
 
     def setupSpec() {
         paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao(Payment.class)
-        repoCallback = Mock(RepositoryCallback)
-        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
+        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
     }
 
     def cleanupSpec() {
@@ -67,28 +67,26 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
 
     def 'should call callback when payment with same date is already added'() {
         given:
-            def repoCallback = Mock(RepositoryCallback)
-            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
+            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
             def payment = new PaymentDTO(new DateTime(), 8)
             def payment2 = new PaymentDTO(new DateTime(), 8)
             paymentRepository.addPayment(payment)
         when:
             paymentRepository.addPayment(payment2)
         then:
-            1 * repoCallback.onPaymentAlreadyAdded(payment2)
+            ShadowAlertDialog.latestAlertDialog != null
     }
 
     def 'should not call callback when payment with different date is already added'() {
         given:
-            def repoCallback = Mock(RepositoryCallback)
-            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
+            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
             def payment = new PaymentDTO(new DateTime(), 8)
             def payment2 = new PaymentDTO(new DateTime().plusDays(1), 8)
             paymentRepository.addPayment(payment)
         when:
             paymentRepository.addPayment(payment2)
         then:
-            0 * repoCallback.onPaymentAlreadyAdded(payment2)
+            ShadowAlertDialog.latestAlertDialog == null
 
 
     }

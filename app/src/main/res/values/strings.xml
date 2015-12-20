@@ -11,4 +11,6 @@
     <string name="date_time_format">dd/MMM/yyyy</string>
     <string name="remaining_classes_info">Trainings remaining:</string>
     <string formatted="false" name="number_format_string">%d</string>
+    <string name="error_saving_entity">Ooops! There has been an error accessing the database! Your data has not been saved!</string>
+    <string name="error_retrieving_all_entities">Ooops! There has been an error! Your data could not be read!</string>
 </resources>

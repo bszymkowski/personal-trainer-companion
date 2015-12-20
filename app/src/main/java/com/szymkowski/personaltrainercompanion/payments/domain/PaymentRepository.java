@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.stmt.PreparedQuery;
@@ -90,6 +91,7 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
             payments = paymentLongDao.query(paymentPreparedQuery);
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception while retrieving last payment data. Exception: " + e.getMessage());
+            Toast.makeText(context, context.getString(R.string.error_retrieving_entity), Toast.LENGTH_SHORT).show();
         }
         if (payments.isEmpty()) {
             return null;

@@ -10,6 +10,7 @@ import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.szymkowski.personaltrainercompanion.R;
 import com.szymkowski.personaltrainercompanion.core.BaseRepository;
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
 
 import org.joda.time.DateTimeComparator;
@@ -23,9 +24,11 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
 
     private static final String TAG = PaymentRepository.class.getSimpleName();
     private final PaymentMapper paymentMapper = PaymentMapper.INSTANCE;
+    private final RepositoryCallback callback;
 
-    public PaymentRepository(Context context) {
+    public PaymentRepository(Context context, RepositoryCallback callback) {
         super(context);
+        this.callback = callback;
     }
 
     public void addPayment(final PaymentDTO paymentDTO) {
@@ -50,6 +53,7 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     create(paymentMapper.paymentDTOToPayment(paymentDTO));
+                    callback.onDatasetChanged();
                     dialog.dismiss();
                 }
             });
@@ -57,6 +61,7 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
             return;
         } else {
             create(paymentMapper.paymentDTOToPayment(paymentDTO));
+            callback.onDatasetChanged();
         }
     }
 
@@ -90,21 +95,6 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
             return null;
         }
         return payments.iterator().next();
-    }
-
-    public void addPaymentWhenSameDateExists(PaymentDTO paymentDTO) {
-        Dao<Payment, Long> paymentLongDao = getDao();
-        if (paymentLongDao==null) {
-            return;
-        }
-        Payment payment = paymentMapper.paymentDTOToPayment(paymentDTO);
-
-        try {
-            paymentLongDao.create(payment);
-        } catch (SQLException e) {
-            Log.e(TAG, "SQLite exception in adding payment data. Exception: " + e.getMessage());
-        }
-        close();
     }
 
     @Override

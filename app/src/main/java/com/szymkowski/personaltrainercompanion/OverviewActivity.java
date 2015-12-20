@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog;
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialogCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
@@ -23,7 +24,7 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.Locale;
 
-public class OverviewActivity extends AppCompatActivity implements AddPaymentDialogCallback {
+public class OverviewActivity extends AppCompatActivity implements AddPaymentDialogCallback, RepositoryCallback {
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private TextView mLastPaymentInfoText;
@@ -38,7 +39,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mPaymentRepository = new PaymentRepository(this);
+        mPaymentRepository = new PaymentRepository(this, this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
         mTrainingsRepository = new TrainingsRepository(this, mPaymentRepository);
@@ -51,8 +52,6 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
             public void onClick(View view) {
                 Dialog addPaymentDialog = new AddPaymentDialog(OverviewActivity.this, OverviewActivity.this);
                 addPaymentDialog.show();
-                updateLastPayment();
-                updateNumberOfTrainingsRemaining();
                 floatingActionsMenu.collapse();
             }
         });
@@ -68,7 +67,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     }
 
     private void updateNumberOfTrainingsRemaining() {
-        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string) ,mTrainingsRepository.getNumberOfTrainingsRemaining()));
+        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string), mTrainingsRepository.getNumberOfTrainingsRemaining()));
     }
 
     @Override
@@ -96,7 +95,6 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     @Override
     public void addPayment(PaymentDTO newPayment) {
         mPaymentRepository.addPayment(newPayment);
-        updateLastPayment();
     }
 
     private void updateLastPayment() {
@@ -111,6 +109,12 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
             paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.getNumberOfClassesPaid());
         }
         mLastPaymentInfoText.setText(paymentInfoText);
+        updateNumberOfTrainingsRemaining();
+    }
+
+    @Override
+    public void onDatasetChanged() {
+        updateLastPayment();
         updateNumberOfTrainingsRemaining();
     }
 }

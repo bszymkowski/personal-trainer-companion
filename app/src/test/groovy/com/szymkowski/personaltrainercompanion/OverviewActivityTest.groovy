@@ -159,4 +159,22 @@ class OverviewActivityTest extends GradleRoboSpecification {
             overviewActivity.findViewById(R.id.number_of_classes_remaining).getText() == 8 as String
     }
 
+    def 'should update number of training paid correctly even when adding another payment on same day'() {
+        given:
+            def overviewActivity = controller.get()
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            def dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+        when:
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            dialog = ShadowDialog.latestDialog
+            dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+            def confirmDialog = ShadowAlertDialog.latestAlertDialog
+            confirmDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            overviewActivity.findViewById(R.id.number_of_classes_remaining).getText() == 16 as String
+    }
+
 }

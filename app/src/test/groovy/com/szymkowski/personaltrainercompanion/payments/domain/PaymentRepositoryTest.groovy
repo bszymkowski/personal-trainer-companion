@@ -1,10 +1,11 @@
 package com.szymkowski.personaltrainercompanion.payments.domain
+import android.app.AlertDialog
 import android.database.sqlite.SQLiteException
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import com.szymkowski.personaltrainercompanion.core.Database
-
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
@@ -26,7 +27,8 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
 
     def setupSpec() {
         paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao(Payment.class)
-        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
+        def callback = Mock(RepositoryCallback)
+        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), callback)
     }
 
     def cleanupSpec() {
@@ -65,27 +67,32 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
             payment1.numberOfClassesPaid == payment.numberOfClassesPaid
     }
 
-    def 'should call callback when payment with same date is already added'() {
+    def 'should display confirmation popup when payment with same date is already added'() {
         given:
-            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
+            def callback = Mock(RepositoryCallback)
+            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), callback)
             def payment = new PaymentDTO(new DateTime(), 8)
             def payment2 = new PaymentDTO(new DateTime(), 8)
             paymentRepository.addPayment(payment)
         when:
             paymentRepository.addPayment(payment2)
+            AlertDialog dialog = ShadowAlertDialog.latestAlertDialog
         then:
-            ShadowAlertDialog.latestAlertDialog != null
+            dialog != null
+
     }
 
-    def 'should not call callback when payment with different date is already added'() {
+    def 'should not display confirmation popup when payment with different date is already added'() {
         given:
-            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext())
+            def callback = Mock(RepositoryCallback)
+            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), callback)
             def payment = new PaymentDTO(new DateTime(), 8)
             def payment2 = new PaymentDTO(new DateTime().plusDays(1), 8)
             paymentRepository.addPayment(payment)
         when:
             paymentRepository.addPayment(payment2)
         then:
+            1 * callback.onDatasetChanged()
             ShadowAlertDialog.latestAlertDialog == null
 
 
@@ -104,7 +111,6 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
         then:
             notThrown(SQLiteException)
             result == 21
-
     }
 
 

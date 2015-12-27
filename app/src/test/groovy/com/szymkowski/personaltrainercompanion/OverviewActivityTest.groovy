@@ -56,7 +56,7 @@ class OverviewActivityTest extends GradleRoboSpecification {
         when:
             TextView lastPaymentInfo = overviewActivity.findViewById(R.id.last_payment_info) as TextView
         then:
-            lastPaymentInfo.getText() == RuntimeEnvironment.application.getResources().getString(R.string.no_payment_found)
+            lastPaymentInfo.getText() == RuntimeEnvironment.application.getResources().getString(R.string.no_data_found)
 
     }
 
@@ -258,6 +258,31 @@ class OverviewActivityTest extends GradleRoboSpecification {
             ShadowAlertDialog.latestAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         then:
             trainingDAO.queryForAll().size() == 2
+    }
+
+    def 'should update last training displayed in activity when trainings added'() {
+        given:
+            List training = trainingDAO.queryForAll()
+            def overviewActivity = controller.get()
+        when: 'text view info text when db empty'
+            def tw = overviewActivity.findViewById(R.id.last_training_info_date) as TextView
+        then:
+            tw.getText() == RuntimeEnvironment.application.getResources().getString(R.string.no_data_found);
+        when: 'open the floating action menu'
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+        then:
+            overviewActivity.findViewById(R.id.fab_action_add_training) != null
+        when: 'click the add training button'
+            overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
+            def dialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            dialog != null
+        when: 'confirm add'
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+            def dateFormatter = DateTimeFormat.forPattern(RuntimeEnvironment.application.getResources().getString(R.string.date_time_format)).withLocale(Locale.getDefault());
+        then:
+            (overviewActivity.findViewById(R.id.last_training_info_date) as TextView).getText() == dateFormatter.print(new DateTime())
+
     }
 
 }

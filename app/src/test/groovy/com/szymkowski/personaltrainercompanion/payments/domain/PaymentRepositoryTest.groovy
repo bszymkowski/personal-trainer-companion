@@ -63,7 +63,7 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
             paymentRepository.addPayment(payment)
         then:
             def payment1 = paymentDAO.findAll().iterator().next()
-            payment1.paymentDate == payment.paymentDate
+            payment1.getDate() == payment.paymentDate
             payment1.numberOfClassesPaid == payment.numberOfClassesPaid
     }
 

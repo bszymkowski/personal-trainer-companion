@@ -12,11 +12,13 @@ class TrainingsMapperTest extends GradleRoboSpecification {
     def 'should map Training to TrainingDTO'() {
         given:
             def date = new DateTime()
-            def training = new Training(0L, date)
+            def training = new Training()
+            training.setId(0L)
+            training.setDate(date)
         when:
             def trainingDTO = TrainingMapper.INSTANCE.trainingToTrainingDto(training)
         then:
-            trainingDTO.trainingDate == training.trainingDate
+            trainingDTO.trainingDate == training.date
     }
 
     def 'should map TrainingDTO to Training'() {
@@ -26,7 +28,7 @@ class TrainingsMapperTest extends GradleRoboSpecification {
         when:
             def training = TrainingMapper.INSTANCE.trainingDtoToTraining(trainingDTO)
         then:
-            trainingDTO.trainingDate == training.trainingDate
+            trainingDTO.trainingDate == training.date
     }
 
 

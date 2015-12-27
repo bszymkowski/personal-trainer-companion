@@ -56,7 +56,25 @@ public abstract class BaseRepository<T, ID> {
             return dao;
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception when accessing " + klazz.getSimpleName() + " database!");
+            Toast.makeText(context, context.getResources().getString(R.string.error_retrieving_all_entities), Toast.LENGTH_SHORT).show();
             return null;
+        }
+    }
+
+    protected T getLatest() {
+        T entity = null;
+        getDao();
+        try {
+            entity = dao.queryBuilder()
+                    .orderBy(BaseEntity.DATE_COLUMN, false)
+                    .limit(1L)
+                    .queryForFirst();
+        } catch (SQLException e) {
+            Log.e(TAG, "SQLite exception when accessing " + klazz.getSimpleName() + " database!");
+            Toast.makeText(context, context.getResources().getString(R.string.error_retrieving_all_entities), Toast.LENGTH_SHORT).show();
+        } finally {
+            close();
+            return entity;
         }
     }
 

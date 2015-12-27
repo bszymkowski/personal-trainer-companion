@@ -36,6 +36,8 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     private PaymentRepository mPaymentRepository;
     private TrainingsRepository mTrainingsRepository;
     private TextView mNumberOfTrainingsInfoText;
+    private TextView mLastTrainingInfoText;
+    private DateTimeFormatter dateTimeFormatter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,12 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         setContentView(R.layout.activity_overview);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dateTimeFormatter = DateTimeFormat.forPattern(getResources().getString(R.string.date_time_format)).withLocale(Locale.getDefault());
+
         mPaymentRepository = new PaymentRepository(this, this);
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
+        mLastTrainingInfoText = (TextView) findViewById(R.id.last_training_info_date);
 
         mTrainingsRepository = new TrainingsRepository(this, mPaymentRepository);
         mNumberOfTrainingsInfoText = (TextView) findViewById(R.id.number_of_trainings_remaining);
@@ -92,6 +98,15 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         super.onResume();
         updateLastPayment();
         updateNumberOfTrainingsRemaining();
+        updateLastTrainingInfo();
+
+    }
+
+    private void updateLastTrainingInfo() {
+        DateTime dateTime = mTrainingsRepository.getLatestTrainingDate();
+        if (dateTime != null) {
+            mLastTrainingInfoText.setText(dateTimeFormatter.print(dateTime));
+        }
     }
 
     private void updateNumberOfTrainingsRemaining() {
@@ -129,10 +144,9 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         PaymentDTO lastPaymentDto = mPaymentRepository.getLastPaymentDTO();
         String paymentInfoText;
         if (lastPaymentDto == null) {
-            paymentInfoText = getResources().getString(R.string.no_payment_found);
+            paymentInfoText = getResources().getString(R.string.no_data_found);
         } else {
             String rawPaymentInfo = getResources().getString(R.string.last_payment_info_string);
-            DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern(getResources().getString(R.string.date_time_format)).withLocale(Locale.getDefault());
             String dateTime = dateTimeFormatter.print(lastPaymentDto.getPaymentDate());
             paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.getNumberOfClassesPaid());
         }
@@ -144,5 +158,6 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     public void onDatasetChanged() {
         updateLastPayment();
         updateNumberOfTrainingsRemaining();
+        updateLastTrainingInfo();
     }
 }

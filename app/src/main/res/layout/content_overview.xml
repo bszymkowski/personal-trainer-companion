@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/main_activity_text_padding"/>
         <TextView
+            android:text="@string/no_data_found"
             style="@style/text_base_one"
             android:id="@+id/last_payment_info"
             android:layout_width="wrap_content"
@@ -27,17 +28,34 @@
     </LinearLayout>
 
     <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/main_activity_text_padding">
+    <TextView android:text="@string/remaining_classes_info"
+        style="@style/text_base_two"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingEnd="@dimen/main_activity_text_padding"/>
+    <TextView
+        style="@style/text_base_one"
+        android:id="@+id/number_of_trainings_remaining"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/main_activity_text_padding">
-        <TextView android:text="@string/remaining_classes_info"
+        <TextView android:text="@string/last_training_info"
             style="@style/text_base_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingEnd="@dimen/main_activity_text_padding"/>
         <TextView
             style="@style/text_base_one"
-            android:id="@+id/number_of_trainings_remaining"
+            android:text="@string/no_data_found"
+            android:id="@+id/last_training_info_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

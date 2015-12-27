@@ -34,7 +34,7 @@ class PaymentMapperTest extends GradleRoboSpecification  {
             payment = mapper.paymentDTOToPayment(paymentDTO)
         then:
             payment.numberOfClassesPaid == numberPaid
-            payment.paymentDate == date
+            payment.date == date
     }
 
 }

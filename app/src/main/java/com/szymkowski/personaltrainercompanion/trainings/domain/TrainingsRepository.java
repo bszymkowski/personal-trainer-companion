@@ -7,7 +7,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
 import com.szymkowski.personaltrainercompanion.R;
 import com.szymkowski.personaltrainercompanion.core.BaseRepository;
 import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
@@ -32,6 +31,11 @@ public class TrainingsRepository extends BaseRepository<Training, Long> {
     public int getNumberOfTrainingsRemaining() {
         int result = provider.getNumberOfTrainingsPaidFor() - getCount();
         return result;
+    }
+
+    public DateTime getLatestTrainingDate() {
+        Training training = getLatest();
+        return training == null ? null : training.getDate();
     }
 
     public void addTraining(final TrainingDTO trainingDTO) {
@@ -72,20 +76,8 @@ public class TrainingsRepository extends BaseRepository<Training, Long> {
     }
 
     private boolean isLastTrainingToday() {
-        getDao();
-        QueryBuilder<Training, Long> builder = dao.queryBuilder();
-        Training latest = null;
-        try {
-            latest = builder.selectColumns(Training.TRAINING_DATE_COLUMN)
-                    .limit(1L)
-                    .orderBy(Training.TRAINING_DATE_COLUMN, false)
-                    .queryForFirst();
-        } catch (SQLException e) {
-            Log.e(TAG, "Error retrieving last training!");
-            Toast.makeText(context, context.getResources().getString(R.string.error_retrieving_entity), Toast.LENGTH_SHORT).show();
-        }
-        close();
-        return latest != null && DateTimeComparator.getDateOnlyInstance().compare(new DateTime(), latest.getTrainingDate()) == 0;
+        Training training = getLatest();
+        return training != null && DateTimeComparator.getDateOnlyInstance().compare(new DateTime(), training.getDate()) == 0;
     }
 
 }

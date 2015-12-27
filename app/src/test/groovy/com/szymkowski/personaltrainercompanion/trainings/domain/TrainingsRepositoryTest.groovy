@@ -56,7 +56,7 @@ class TrainingsRepositoryTest extends GradleRoboSpecification {
             def resultTraining = result.iterator().next() as Training
         then:
             result.size() == 1
-            resultTraining.trainingDate == date
+            resultTraining.getDate() == date
     }
 
     def 'should show alert dialog if attempting to add second training on same date'() {
@@ -64,6 +64,7 @@ class TrainingsRepositoryTest extends GradleRoboSpecification {
             def mockProvider = Mock(PaidNumberOfTrainingsProvider)
             def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockProvider)
             trainingsDao.create(new Training(new DateTime()))
+            trainingsDao.create(new Training(new DateTime().minusDays(3)))
         when:
             def training = new TrainingDTO(new DateTime())
             trainingRepo.addTraining(training)

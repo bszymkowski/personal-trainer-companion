@@ -2,6 +2,7 @@ package com.szymkowski.personaltrainercompanion.trainings.domain;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.szymkowski.personaltrainercompanion.core.BaseEntity;
 
 import org.joda.time.DateTime;
 
@@ -13,18 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
 @DatabaseTable(tableName = Training.TABLE_NAME)
-class Training {
+class Training extends BaseEntity {
     public static final String TABLE_NAME = "table_trainings";
-    public static final String TRAINING_DATE_COLUMN = "training_date";
+
     @DatabaseField(generatedId = true)
     private Long id;
 
-    @DatabaseField(columnName = TRAINING_DATE_COLUMN)
-    private DateTime trainingDate;
-
     public Training(DateTime trainingDate) {
+        super(trainingDate);
         this.id = 0L;
-        this.trainingDate = trainingDate;
     }
 
 }

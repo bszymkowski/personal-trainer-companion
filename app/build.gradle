@@ -29,7 +29,7 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.45'
     compile 'joda-time:joda-time:2.9.1'
     compile 'com.getbase:floatingactionbutton:1.10.1'
-
+    compile project(':domainObjects')
 
     provided 'org.projectlombok:lombok:1.16.6'
 
@@ -38,8 +38,9 @@ dependencies {
     provided 'org.mapstruct:mapstruct-processor:1.0.0.Final'
     provided 'org.glassfish:javax.annotation:10.0-b28'
 
-    testCompile 'org.robospock:robospock:0.8.0'
-    compile project(':domains')
+    testCompile 'org.robospock:robospock:1.0.0'
+    testCompile 'cglib:cglib-nodep:3.2.0'
+
 }
 
 

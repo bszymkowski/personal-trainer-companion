@@ -1,32 +1,34 @@
 package com.szymkowski.personaltrainercompanion.payments.domain
-
+import android.app.AlertDialog
 import android.database.sqlite.SQLiteException
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
-import com.szymkowski.personaltrainercompanion.payments.addpayment.RepositoryCallback
+import com.szymkowski.personaltrainercompanion.core.Database
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
-import pl.polidea.robospock.GradleRoboSpecification
+import org.robolectric.shadows.ShadowAlertDialog
+import org.robospock.GradleRoboSpecification
 import spock.lang.Shared
 
-@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.KITKAT)
+@Config(constants = BuildConfig, sdk = Build.VERSION_CODES.LOLLIPOP)
 class PaymentRepositoryTest extends GradleRoboSpecification  {
 
 
     @Shared def paymentDAO
     @Shared PaymentRepository paymentRepository
-    @Shared def repoCallback
 
     def setup() {
         paymentDAO.delete(paymentDAO.queryForAll())
+        ShadowAlertDialog.reset()
     }
 
     def setupSpec() {
-        paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao()
-        repoCallback = Mock(RepositoryCallback)
-        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
+        paymentDAO = OpenHelperManager.getHelper(RuntimeEnvironment.application.getApplicationContext(), Database.class).getDao(Payment.class)
+        def callback = Mock(RepositoryCallback)
+        paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), callback)
     }
 
     def cleanupSpec() {
@@ -61,34 +63,37 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
             paymentRepository.addPayment(payment)
         then:
             def payment1 = paymentDAO.findAll().iterator().next()
-            payment1.paymentDate == payment.paymentDate
+            payment1.getDate() == payment.paymentDate
             payment1.numberOfClassesPaid == payment.numberOfClassesPaid
     }
 
-    def 'should call callback when payment with same date is already added'() {
+    def 'should display confirmation popup when payment with same date is already added'() {
         given:
-            def repoCallback = Mock(RepositoryCallback)
-            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
+            def callback = Mock(RepositoryCallback)
+            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), callback)
             def payment = new PaymentDTO(new DateTime(), 8)
             def payment2 = new PaymentDTO(new DateTime(), 8)
             paymentRepository.addPayment(payment)
         when:
             paymentRepository.addPayment(payment2)
+            AlertDialog dialog = ShadowAlertDialog.latestAlertDialog
         then:
-            1 * repoCallback.onPaymentAlreadyAdded(payment2)
+            dialog != null
+
     }
 
-    def 'should not call callback when payment with different date is already added'() {
+    def 'should not display confirmation popup when payment with different date is already added'() {
         given:
-            def repoCallback = Mock(RepositoryCallback)
-            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), repoCallback)
+            def callback = Mock(RepositoryCallback)
+            def paymentRepository = new PaymentRepository(RuntimeEnvironment.application.getApplicationContext(), callback)
             def payment = new PaymentDTO(new DateTime(), 8)
             def payment2 = new PaymentDTO(new DateTime().plusDays(1), 8)
             paymentRepository.addPayment(payment)
         when:
             paymentRepository.addPayment(payment2)
         then:
-            0 * repoCallback.onPaymentAlreadyAdded(payment2)
+            1 * callback.onDatasetChanged()
+            ShadowAlertDialog.latestAlertDialog == null
 
 
     }
@@ -106,7 +111,6 @@ class PaymentRepositoryTest extends GradleRoboSpecification  {
         then:
             notThrown(SQLiteException)
             result == 21
-
     }
 
 

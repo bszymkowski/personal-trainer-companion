@@ -7,24 +7,19 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 
-/*
-This is probably the biggest overkill ever, to use mapstruct just for this one mapper.
-The heck, I wanted to learn how to do this.
- */
-
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface PaymentMapper {
 
     PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
 
     @Mappings({
-            @Mapping(source = "paymentDate", target = "paymentDate"),
+            @Mapping(source = "date", target = "paymentDate"),
             @Mapping(source = "numberOfClassesPaid", target = "numberOfClassesPaid")
     })
     PaymentDTO paymentToPaymentDTO(Payment payment);
 
     @Mappings({
-            @Mapping(source = "paymentDate", target = "paymentDate"),
+            @Mapping(source = "paymentDate", target = "date"),
             @Mapping(source = "numberOfClassesPaid", target = "numberOfClassesPaid")
     })
     Payment paymentDTOToPayment(PaymentDTO paymentDTO);

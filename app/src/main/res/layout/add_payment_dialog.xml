@@ -13,7 +13,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/numer_of_classes_hint"/>
+            android:text="@string/number_of_classes_hint"/>
         <NumberPicker
             android:id="@+id/add_payment_dialog_number_picker"
             android:layout_width="wrap_content"

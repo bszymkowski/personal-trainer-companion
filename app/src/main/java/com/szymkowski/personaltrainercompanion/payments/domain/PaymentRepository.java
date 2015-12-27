@@ -17,7 +17,6 @@ import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfT
 import org.joda.time.DateTimeComparator;
 
 import java.sql.SQLException;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -33,13 +32,8 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
     }
 
     public void addPayment(final PaymentDTO paymentDTO) {
-        Dao<Payment, Long> paymentLongDao = getDao();
-        if (paymentLongDao==null) {
-            return;
-        }
         Payment payment = paymentMapper.paymentDTOToPayment(paymentDTO);
-        Payment previous = getLastPayment(paymentLongDao);
-        close();
+        Payment previous = getLastPayment();
         if (isPaymentOnSameDay(payment, previous)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(R.string.payment_already_added_today_title);
@@ -71,32 +65,33 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
     }
 
     public PaymentDTO getLastPaymentDTO() {
-        Dao<Payment, Long> paymentLongDao = getDao();
-        Payment lastPayment = getLastPayment(paymentLongDao);
+        Payment lastPayment = getLastPayment();
         PaymentDTO result = paymentMapper.paymentToPaymentDTO(lastPayment);
-        close();
         return result;
     }
 
-    private Payment getLastPayment(Dao<Payment, Long> paymentLongDao) {
+    private Payment getLastPayment() {
+        Dao<Payment, Long> paymentLongDao = getDao();
         if (paymentLongDao==null) {
             return null;
         }
         //noinspection unchecked
-        List<Payment> payments = Collections.EMPTY_LIST;
         QueryBuilder<Payment, Long> builder = paymentLongDao.queryBuilder();
         builder.orderBy(Payment.PAYMENT_DATE_COLUMN, false).limit(1L);
         try {
             PreparedQuery<Payment> paymentPreparedQuery  = builder.prepare();
-            payments = paymentLongDao.query(paymentPreparedQuery);
+            List<Payment> payments = paymentLongDao.query(paymentPreparedQuery);
+            if (payments.isEmpty()) {
+                return null;
+            }
+            return payments.iterator().next();
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception while retrieving last payment data. Exception: " + e.getMessage());
             Toast.makeText(context, context.getString(R.string.error_retrieving_entity), Toast.LENGTH_SHORT).show();
-        }
-        if (payments.isEmpty()) {
             return null;
+        } finally {
+            close();
         }
-        return payments.iterator().next();
     }
 
     @Override

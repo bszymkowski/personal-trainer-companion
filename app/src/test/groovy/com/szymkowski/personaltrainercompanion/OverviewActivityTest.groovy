@@ -236,4 +236,28 @@ class OverviewActivityTest extends GradleRoboSpecification {
                 (overviewActivity.findViewById(R.id.number_of_trainings_remaining) as TextView).getText() == 7 as String
     }
 
+    def 'should ask for confirmation when adding second training on the same date'() {
+        given:
+            def overviewActivity = controller.get()
+            TrainingsDaoHelper.addTraining()
+        when: 'open the floating action menu'
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+        then:
+            overviewActivity.findViewById(R.id.fab_action_add_training) != null
+        when: 'click the add training button'
+            overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
+            def dialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            dialog != null
+        when: 'cancel add '
+            ShadowAlertDialog.reset()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            ShadowAlertDialog.latestAlertDialog != null
+        when: 'confirm adding'
+            ShadowAlertDialog.latestAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            trainingDAO.queryForAll().size() == 2
+    }
+
 }

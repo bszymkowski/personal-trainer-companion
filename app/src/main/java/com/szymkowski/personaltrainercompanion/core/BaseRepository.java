@@ -18,6 +18,7 @@ public abstract class BaseRepository<T, ID> {
     private static final String TAG = BaseRepository.class.getName();
     private final Class klazz;
     protected final Context context;
+    protected Dao<T, ID> dao;
 
     public BaseRepository(Context context){
         this.klazz  = (Class) ((ParameterizedType) getClass()
@@ -51,7 +52,8 @@ public abstract class BaseRepository<T, ID> {
 
     protected Dao<T, ID> getDao() {
         try {
-            return OpenHelperManager.getHelper(context, Database.class).getDao(klazz);
+            dao = OpenHelperManager.getHelper(context, Database.class).getDao(klazz);
+            return dao;
         } catch (SQLException e) {
             Log.e(TAG, "SQLite exception when accessing " + klazz.getSimpleName() + " database!");
             return null;

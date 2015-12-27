@@ -16,4 +16,6 @@
     <string name="error_retrieving_entity">Ooops! There has been an error accessing your data!</string>
     <string name="add_single_training_title">Add a new training?</string>
     <string name="add_single_training_message">Add a new training for today?</string>
+    <string name="training_added_today_title">Are you sure?</string>
+    <string name="training_added_today_message">A training with the same date has already been added. Do you want to add another?</string>
 </resources>

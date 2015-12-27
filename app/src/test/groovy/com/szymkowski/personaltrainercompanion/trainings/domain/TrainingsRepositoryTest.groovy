@@ -1,5 +1,4 @@
 package com.szymkowski.personaltrainercompanion.trainings.domain
-
 import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
@@ -8,6 +7,7 @@ import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfT
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import org.robolectric.shadows.ShadowAlertDialog
 import org.robospock.GradleRoboSpecification
 import spock.lang.Shared
 
@@ -57,7 +57,17 @@ class TrainingsRepositoryTest extends GradleRoboSpecification {
         then:
             result.size() == 1
             resultTraining.trainingDate == date
+    }
 
-
+    def 'should show alert dialog if attempting to add second training on same date'() {
+        given:
+            def mockProvider = Mock(PaidNumberOfTrainingsProvider)
+            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockProvider)
+            trainingsDao.create(new Training(new DateTime()))
+        when:
+            def training = new TrainingDTO(new DateTime())
+            trainingRepo.addTraining(training)
+        then:
+            ShadowAlertDialog.latestAlertDialog != null
     }
 }

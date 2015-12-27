@@ -39,6 +39,15 @@
         android:id="@+id/fab_action_add_payment"
         app:fab_size="mini"/>
 
+    <com.getbase.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center"
+        app:fab_title="@string/fab_add_payment"
+        android:src="@drawable/ic_event"
+        android:id="@+id/fab_action_add_training"
+        app:fab_size="mini"/>
+
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 </android.support.design.widget.CoordinatorLayout>

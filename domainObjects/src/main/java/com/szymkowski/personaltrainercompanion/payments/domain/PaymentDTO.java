@@ -12,7 +12,13 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class PaymentDTO {
-
+    private Long id;
     private DateTime paymentDate;
     private int numberOfClassesPaid;
+
+    public PaymentDTO(DateTime paymentDate, int numberOfClassesPaid) {
+        this.id = 0L;
+        this.paymentDate = paymentDate;
+        this.numberOfClassesPaid = numberOfClassesPaid;
+    }
 }

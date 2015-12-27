@@ -12,6 +12,12 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class TrainingDTO {
-
+    private Long id;
     private DateTime trainingDate;
+
+    public TrainingDTO(DateTime trainingDate) {
+        this.id = 0L;
+        this.trainingDate = trainingDate;
+    }
+
 }

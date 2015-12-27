@@ -14,4 +14,6 @@
     <string name="error_saving_entity">Ooops! There has been an error accessing the database! Your data has not been saved!</string>
     <string name="error_retrieving_all_entities">Ooops! There has been an error! Your data could not be read!</string>
     <string name="error_retrieving_entity">Ooops! There has been an error accessing your data!</string>
+    <string name="add_single_training_title">Add a new training?</string>
+    <string name="add_single_training_message">Add a new training for today?</string>
 </resources>

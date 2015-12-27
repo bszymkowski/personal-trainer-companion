@@ -37,7 +37,7 @@
             android:paddingEnd="@dimen/main_activity_text_padding"/>
         <TextView
             style="@style/text_base_one"
-            android:id="@+id/number_of_classes_remaining"
+            android:id="@+id/number_of_trainings_remaining"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>

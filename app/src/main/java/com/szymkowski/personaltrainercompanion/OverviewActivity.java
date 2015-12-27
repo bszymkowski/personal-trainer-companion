@@ -1,6 +1,8 @@
 package com.szymkowski.personaltrainercompanion;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +19,10 @@ import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog;
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialogCallback;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO;
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository;
+import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingDTO;
 import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsRepository;
 
+import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -43,7 +47,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
 
         mTrainingsRepository = new TrainingsRepository(this, mPaymentRepository);
-        mNumberOfTrainingsInfoText = (TextView) findViewById(R.id.number_of_classes_remaining);
+        mNumberOfTrainingsInfoText = (TextView) findViewById(R.id.number_of_trainings_remaining);
 
         final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);
         FloatingActionButton fabAddPayment = (FloatingActionButton) findViewById(R.id.fab_action_add_payment);
@@ -53,6 +57,30 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
                 Dialog addPaymentDialog = new AddPaymentDialog(OverviewActivity.this, OverviewActivity.this);
                 addPaymentDialog.show();
                 floatingActionsMenu.collapse();
+            }
+        });
+        FloatingActionButton fabAddSingleTraining = (FloatingActionButton) findViewById(R.id.fab_action_add_training);
+        fabAddSingleTraining.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(OverviewActivity.this);
+                builder.setTitle(R.string.add_single_training_title);
+                builder.setMessage(R.string.add_single_training_message);
+                builder.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                builder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mTrainingsRepository.addTraining(new TrainingDTO(new DateTime()));
+                        onDatasetChanged();
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
             }
         });
 

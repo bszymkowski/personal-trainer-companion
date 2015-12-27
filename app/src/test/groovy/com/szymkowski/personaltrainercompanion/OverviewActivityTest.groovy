@@ -7,6 +7,7 @@ import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDaoHelper
+import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsDaoHelper
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.robolectric.Robolectric
@@ -21,10 +22,12 @@ import spock.lang.Shared
 class OverviewActivityTest extends GradleRoboSpecification {
 
     @Shared def paymentDAO;
+    @Shared def trainingDAO;
     def controller;
 
     def setup() {
         paymentDAO.delete(paymentDAO.queryForAll())
+        trainingDAO.delete(trainingDAO.queryForAll())
         controller = Robolectric.buildActivity(OverviewActivity.class).create()
         controller.start()
         controller.resume()
@@ -37,11 +40,12 @@ class OverviewActivityTest extends GradleRoboSpecification {
     }
 
     def setupSpec() {
-
+        trainingDAO = TrainingsDaoHelper.getTrainingsDao()
         paymentDAO = PaymentDaoHelper.getPaymentsDao()
     }
 
     def cleanupSpec() {
+        OpenHelperManager.releaseHelper()
         OpenHelperManager.releaseHelper()
     }
 
@@ -147,7 +151,7 @@ class OverviewActivityTest extends GradleRoboSpecification {
         given:
             def overviewActivity = controller.get()
         when:
-            def numberRemaining = overviewActivity.findViewById(R.id.number_of_classes_remaining).getText()
+            def numberRemaining = overviewActivity.findViewById(R.id.number_of_trainings_remaining).getText()
         then:
             numberRemaining == 0 as String
         when:
@@ -156,10 +160,10 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def dialog = ShadowDialog.latestDialog
             dialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
         then:
-            overviewActivity.findViewById(R.id.number_of_classes_remaining).getText() == 8 as String
+            overviewActivity.findViewById(R.id.number_of_trainings_remaining).getText() == 8 as String
     }
 
-    def 'should update number of training paid correctly even when adding another payment on same day'() {
+    def 'should update number of trainings paid for correctly even when adding another payment on same day'() {
         given:
             def overviewActivity = controller.get()
             overviewActivity.findViewById(R.id.fab_menu).performClick()
@@ -174,7 +178,62 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def confirmDialog = ShadowAlertDialog.latestAlertDialog
             confirmDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         then:
-            overviewActivity.findViewById(R.id.number_of_classes_remaining).getText() == 16 as String
+            overviewActivity.findViewById(R.id.number_of_trainings_remaining).getText() == 16 as String
+    }
+
+    def 'should add training info when asked'() {
+        given:
+            def overviewActivity = controller.get()
+        when: 'open the floating action menu'
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+        then:
+            overviewActivity.findViewById(R.id.fab_action_add_training) != null
+        when: 'click the add training button'
+            overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
+            def dialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            dialog != null
+        when: 'confirm add '
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            trainingDAO.queryForAll().size == 1
+    }
+
+    def 'should react to add training click, but not add training if cancel was pressed'() {
+        given:
+            def overviewActivity = controller.get()
+        when: 'open the floating action menu'
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+        then:
+            overviewActivity.findViewById(R.id.fab_action_add_training) != null
+        when: 'click the add training button'
+            overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
+            def dialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            dialog != null
+        when: 'cancel add '
+            dialog.getButton(AlertDialog.BUTTON_NEGATIVE).performClick()
+        then:
+            trainingDAO.queryForAll().size == 0
+    }
+
+    def 'should add training and update remaining training number'() {
+            given:
+                def overviewActivity = controller.get()
+                PaymentDaoHelper.addPayment()
+            when: 'open the floating action menu'
+                overviewActivity.findViewById(R.id.fab_menu).performClick()
+            then:
+                overviewActivity.findViewById(R.id.fab_action_add_training) != null
+            when: 'click the add training button'
+                overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
+                def dialog = ShadowAlertDialog.latestAlertDialog
+            then:
+                dialog != null
+            when: 'cancel add '
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+            then:
+                (overviewActivity.findViewById(R.id.number_of_trainings_remaining) as TextView).getText() == 7 as String
     }
 
 }

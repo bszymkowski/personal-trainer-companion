@@ -18,12 +18,14 @@ public abstract class BaseRepository<T, ID> {
     private static final String TAG = BaseRepository.class.getName();
     private final Class klazz;
     protected final Context context;
+    protected final RepositoryCallback callback;
     protected Dao<T, ID> dao;
 
-    public BaseRepository(Context context){
+    public BaseRepository(Context context, RepositoryCallback callback){
         this.klazz  = (Class) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         this.context = context;
+        this.callback = callback;
     }
 
     protected void create(T entity) {
@@ -34,6 +36,7 @@ public abstract class BaseRepository<T, ID> {
             Log.e(TAG, "SQLite exception when saving " + klazz.getSimpleName() + "!");
             Toast.makeText(context, context.getResources().getString(R.string.error_saving_entity), Toast.LENGTH_SHORT).show();
         }
+        callback.onDatasetChanged();
         close();
     }
 

@@ -52,7 +52,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         mLastPaymentInfoText = (TextView) findViewById(R.id.last_payment_info);
         mLastTrainingInfoText = (TextView) findViewById(R.id.last_training_info_date);
 
-        mTrainingsRepository = new TrainingsRepository(this, mPaymentRepository);
+        mTrainingsRepository = new TrainingsRepository(this,this, mPaymentRepository);
         mNumberOfTrainingsInfoText = (TextView) findViewById(R.id.number_of_trainings_remaining);
 
         final FloatingActionsMenu floatingActionsMenu = (FloatingActionsMenu) findViewById(R.id.fab_menu);

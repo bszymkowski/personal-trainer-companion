@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.j256.ormlite.dao.Dao;
 import com.szymkowski.personaltrainercompanion.R;
 import com.szymkowski.personaltrainercompanion.core.BaseRepository;
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback;
 import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider;
 
 import org.joda.time.DateTime;
@@ -23,8 +24,8 @@ public class TrainingsRepository extends BaseRepository<Training, Long> {
     private static final String TAG = TrainingsRepository.class.getSimpleName();
     private final TrainingMapper trainingMapper = TrainingMapper.INSTANCE;
 
-    public TrainingsRepository(Context context, PaidNumberOfTrainingsProvider provider) {
-        super(context);
+    public TrainingsRepository(Context context, RepositoryCallback callback, PaidNumberOfTrainingsProvider provider) {
+        super(context, callback);
         this.provider = provider;
     }
 

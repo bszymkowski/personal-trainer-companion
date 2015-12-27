@@ -3,6 +3,7 @@ import android.os.Build
 import com.j256.ormlite.android.apptools.OpenHelperManager
 import com.szymkowski.personaltrainercompanion.BuildConfig
 import com.szymkowski.personaltrainercompanion.core.Database
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import com.szymkowski.personaltrainercompanion.trainings.providers.PaidNumberOfTrainingsProvider
 import org.joda.time.DateTime
 import org.robolectric.RuntimeEnvironment
@@ -34,12 +35,13 @@ class TrainingsRepositoryTest extends GradleRoboSpecification {
 
     def 'should correctly obtain total number of classes paid for when no trainings have been used'() {
         given:
-            def mockprovider = Mock(PaidNumberOfTrainingsProvider)
-            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockprovider)
+            def mockProvider = Mock(PaidNumberOfTrainingsProvider)
+            def mockCallback = Mock(RepositoryCallback)
+            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockCallback, mockProvider)
         when:
             def result = trainingRepo.numberOfTrainingsRemaining
         then:
-            1* mockprovider.numberOfTrainingsPaidFor >> 42
+            1* mockProvider.numberOfTrainingsPaidFor >> 42
             result == 42
     }
 
@@ -47,7 +49,8 @@ class TrainingsRepositoryTest extends GradleRoboSpecification {
     def 'should correctly save training information'() {
         given:
             def mockProvider = Mock(PaidNumberOfTrainingsProvider)
-            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockProvider)
+            def mockCallback = Mock(RepositoryCallback)
+            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockCallback, mockProvider)
             def date = new DateTime()
             def training = new TrainingDTO(date)
         when:
@@ -62,7 +65,8 @@ class TrainingsRepositoryTest extends GradleRoboSpecification {
     def 'should show alert dialog if attempting to add second training on same date'() {
         given:
             def mockProvider = Mock(PaidNumberOfTrainingsProvider)
-            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockProvider)
+            def mockCallback = Mock(RepositoryCallback)
+            def trainingRepo = new TrainingsRepository(RuntimeEnvironment.application.getApplicationContext(), mockCallback, mockProvider)
             trainingsDao.create(new Training(new DateTime()))
             trainingsDao.create(new Training(new DateTime().minusDays(3)))
         when:

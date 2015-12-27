@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:foregroundGravity="center"
-        app:fab_title="@string/fab_add_payment"
+        app:fab_title="@string/fab_add_training"
         android:src="@drawable/ic_event"
         android:id="@+id/fab_action_add_training"
         app:fab_size="mini"/>

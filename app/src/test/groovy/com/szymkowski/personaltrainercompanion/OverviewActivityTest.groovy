@@ -4,6 +4,7 @@ import android.os.Build
 import android.widget.NumberPicker
 import android.widget.TextView
 import com.j256.ormlite.android.apptools.OpenHelperManager
+import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDaoHelper
@@ -249,7 +250,7 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def dialog = ShadowAlertDialog.latestAlertDialog
         then:
             dialog != null
-        when: 'cancel add '
+        when: 'confirm adding'
             ShadowAlertDialog.reset()
             dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         then:
@@ -262,7 +263,6 @@ class OverviewActivityTest extends GradleRoboSpecification {
 
     def 'should update last training displayed in activity when trainings added'() {
         given:
-            List training = trainingDAO.queryForAll()
             def overviewActivity = controller.get()
         when: 'text view info text when db empty'
             def tw = overviewActivity.findViewById(R.id.last_training_info_date) as TextView
@@ -282,6 +282,34 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def dateFormatter = DateTimeFormat.forPattern(RuntimeEnvironment.application.getResources().getString(R.string.date_time_format)).withLocale(Locale.getDefault());
         then:
             (overviewActivity.findViewById(R.id.last_training_info_date) as TextView).getText() == dateFormatter.print(new DateTime())
+
+    }
+
+    def 'should update last training in activity when another training added on same day'() {
+        given:
+            TrainingsDaoHelper.addTraining()
+            PaymentDaoHelper.addPayment()
+            def overviewActivity = controller.get()
+            (overviewActivity as RepositoryCallback).onDatasetChanged()
+        when: 'open the floating action menu'
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
+        then:
+            overviewActivity.findViewById(R.id.fab_action_add_training) != null
+            (overviewActivity.findViewById(R.id.number_of_trainings_remaining) as TextView).getText() == 7 as String
+        when: 'click the add training button'
+            overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
+            def dialog = ShadowAlertDialog.latestAlertDialog
+        then:
+            dialog != null
+        when: 'confirm add'
+            ShadowAlertDialog.reset()
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            ShadowAlertDialog.latestAlertDialog != null
+        when: 'confirm adding'
+            ShadowAlertDialog.latestAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
+        then:
+            (overviewActivity.findViewById(R.id.number_of_trainings_remaining) as TextView).getText() == 6 as String
 
     }
 

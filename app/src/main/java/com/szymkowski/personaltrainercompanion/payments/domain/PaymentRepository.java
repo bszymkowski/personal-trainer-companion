@@ -21,11 +21,9 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
 
     private static final String TAG = PaymentRepository.class.getSimpleName();
     private final PaymentMapper paymentMapper = PaymentMapper.INSTANCE;
-    private final RepositoryCallback callback;
 
     public PaymentRepository(Context context, RepositoryCallback callback) {
-        super(context);
-        this.callback = callback;
+        super(context, callback);
     }
 
     public void addPayment(final PaymentDTO paymentDTO) {
@@ -45,7 +43,6 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     create(paymentMapper.paymentDTOToPayment(paymentDTO));
-                    callback.onDatasetChanged();
                     dialog.dismiss();
                 }
             });
@@ -53,7 +50,6 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
             return;
         } else {
             create(paymentMapper.paymentDTOToPayment(paymentDTO));
-            callback.onDatasetChanged();
         }
     }
 

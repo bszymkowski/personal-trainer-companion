@@ -18,10 +18,10 @@ public abstract class BaseRepository<T, ID> {
     private static final String TAG = BaseRepository.class.getName();
     private final Class klazz;
     protected final Context context;
-    protected final RepositoryCallback callback;
-    protected Dao<T, ID> dao;
+    private final RepositoryCallback callback;
+    private Dao<T, ID> dao;
 
-    public BaseRepository(Context context, RepositoryCallback callback){
+    protected BaseRepository(Context context, RepositoryCallback callback){
         this.klazz  = (Class) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
         this.context = context;
@@ -77,8 +77,8 @@ public abstract class BaseRepository<T, ID> {
             Toast.makeText(context, context.getResources().getString(R.string.error_retrieving_all_entities), Toast.LENGTH_SHORT).show();
         } finally {
             close();
-            return entity;
         }
+        return entity;
     }
 
     protected void close() {

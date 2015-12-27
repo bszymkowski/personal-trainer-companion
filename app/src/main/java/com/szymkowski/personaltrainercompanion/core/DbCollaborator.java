@@ -18,7 +18,7 @@ public abstract class DbCollaborator<T> {
 
     private final Class klazz;
 
-    public DbCollaborator() {
+    protected DbCollaborator() {
         this.klazz  = (Class) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0];
     }
@@ -29,6 +29,7 @@ public abstract class DbCollaborator<T> {
     }
 
 
+    @SuppressWarnings({"EmptyMethod", "RedundantThrows", "UnusedParameters"})
     public abstract void upgradeTable(SQLiteDatabase db, ConnectionSource connectionSource, int oldVersion, int newVersion) throws SQLException;
 
 }

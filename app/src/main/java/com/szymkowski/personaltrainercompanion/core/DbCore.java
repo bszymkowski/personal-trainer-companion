@@ -6,7 +6,7 @@ import com.j256.ormlite.dao.RuntimeExceptionDao;
 
 import java.sql.SQLException;
 
-public interface DbCore {
+interface DbCore {
     Dao getDomainDao(Class<?> klazz) throws SQLException;
     RuntimeExceptionDao getDomainRuntimeExceptionDao(Class<?> klazz);
 }

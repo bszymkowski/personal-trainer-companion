@@ -30,8 +30,7 @@ public class TrainingsRepository extends BaseRepository<Training, Long> {
     }
 
     public int getNumberOfTrainingsRemaining() {
-        int result = provider.getNumberOfTrainingsPaidFor() - getCount();
-        return result;
+        return provider.getNumberOfTrainingsPaidFor() - getCount();
     }
 
     public DateTime getLatestTrainingDate() {

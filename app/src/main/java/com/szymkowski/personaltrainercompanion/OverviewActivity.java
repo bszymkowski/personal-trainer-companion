@@ -82,7 +82,6 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mTrainingsRepository.addTraining(new TrainingDTO(new DateTime()));
-                        onDatasetChanged();
                         dialog.dismiss();
                     }
                 });

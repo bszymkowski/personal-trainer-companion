@@ -18,7 +18,8 @@
             style="@style/text_base_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/main_activity_text_padding"/>
+            android:paddingEnd="@dimen/main_activity_text_padding"
+            tools:ignore="RtlSymmetry" />
         <TextView
             android:text="@string/no_data_found"
             style="@style/text_base_one"
@@ -35,7 +36,8 @@
         style="@style/text_base_two"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="@dimen/main_activity_text_padding"/>
+        android:paddingEnd="@dimen/main_activity_text_padding"
+        tools:ignore="RtlSymmetry" />
     <TextView
         style="@style/text_base_one"
         android:id="@+id/number_of_trainings_remaining"
@@ -51,7 +53,8 @@
             style="@style/text_base_two"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/main_activity_text_padding"/>
+            android:paddingEnd="@dimen/main_activity_text_padding"
+            tools:ignore="RtlSymmetry" />
         <TextView
             style="@style/text_base_one"
             android:text="@string/no_data_found"

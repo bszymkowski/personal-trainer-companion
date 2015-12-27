@@ -47,7 +47,6 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
                 }
             });
             builder.show();
-            return;
         } else {
             create(paymentMapper.paymentDTOToPayment(paymentDTO));
         }
@@ -59,8 +58,7 @@ public class PaymentRepository extends BaseRepository<Payment, Long> implements 
 
     public PaymentDTO getLastPaymentDTO() {
         Payment lastPayment = getLatest();
-        PaymentDTO result = paymentMapper.paymentToPaymentDTO(lastPayment);
-        return result;
+        return paymentMapper.paymentToPaymentDTO(lastPayment);
     }
 
     @Override

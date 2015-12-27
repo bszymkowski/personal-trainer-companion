@@ -9,6 +9,7 @@ import org.robolectric.RuntimeEnvironment;
 
 import java.sql.SQLException;
 
+@SuppressWarnings("WeakerAccess")
 public class TrainingsDaoHelper {
 
     public static Dao<Training, Long> getTrainingsDao() throws SQLException {

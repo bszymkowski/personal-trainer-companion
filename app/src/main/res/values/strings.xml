@@ -20,4 +20,5 @@
     <string name="training_added_today_message">A training with the same date has already been added. Do you want to add another?</string>
     <string name="last_training_info">Last training:</string>
     <string name="fab_add_training">Training (Single)</string>
+    <string name="no_trainings_remaining">No trainings remaining! Add a new payment first!</string>
 </resources>

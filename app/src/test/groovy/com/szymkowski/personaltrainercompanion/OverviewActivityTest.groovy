@@ -1,6 +1,7 @@
 package com.szymkowski.personaltrainercompanion
 import android.app.AlertDialog
 import android.os.Build
+import android.view.View
 import android.widget.NumberPicker
 import android.widget.TextView
 import com.j256.ormlite.android.apptools.OpenHelperManager
@@ -48,6 +49,17 @@ class OverviewActivityTest extends GradleRoboSpecification {
     def cleanupSpec() {
         OpenHelperManager.releaseHelper()
         OpenHelperManager.releaseHelper()
+    }
+
+    def 'should not display add training menu item if no trainings are available'() {
+        given:
+            OverviewActivity overviewActivity = controller.get()
+        when:
+            overviewActivity.findViewById(R.id.fab_expand_menu_button).performClick()
+            def addTraining = overviewActivity.findViewById(R.id.fab_action_add_training)
+        then:
+            addTraining.visibility == View.GONE
+
     }
 
 
@@ -187,6 +199,10 @@ class OverviewActivityTest extends GradleRoboSpecification {
             def overviewActivity = controller.get()
         when: 'open the floating action menu'
             overviewActivity.findViewById(R.id.fab_menu).performClick()
+        and: 'add payment to accept new trainings'
+                overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+                ShadowDialog.latestDialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+                overviewActivity.findViewById(R.id.fab_menu).performClick()
         then:
             overviewActivity.findViewById(R.id.fab_action_add_training) != null
         when: 'click the add training button'
@@ -243,6 +259,10 @@ class OverviewActivityTest extends GradleRoboSpecification {
             TrainingsDaoHelper.addTraining()
         when: 'open the floating action menu'
             overviewActivity.findViewById(R.id.fab_menu).performClick()
+        and: 'add payment to accept new trainings'
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            ShadowDialog.latestDialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
         then:
             overviewActivity.findViewById(R.id.fab_action_add_training) != null
         when: 'click the add training button'
@@ -272,7 +292,11 @@ class OverviewActivityTest extends GradleRoboSpecification {
             overviewActivity.findViewById(R.id.fab_menu).performClick()
         then:
             overviewActivity.findViewById(R.id.fab_action_add_training) != null
-        when: 'click the add training button'
+        when: 'add some payment to make sure you can add training'
+            overviewActivity.findViewById(R.id.fab_action_add_payment).performClick()
+            ShadowDialog.latestDialog.findViewById(R.id.add_payment_dialog_button_ok).performClick()
+        and: 'click the add training button'
+            overviewActivity.findViewById(R.id.fab_menu).performClick()
             overviewActivity.findViewById(R.id.fab_action_add_training).performClick()
             def dialog = ShadowAlertDialog.latestAlertDialog
         then:
@@ -310,7 +334,5 @@ class OverviewActivityTest extends GradleRoboSpecification {
             ShadowAlertDialog.latestAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         then:
             (overviewActivity.findViewById(R.id.number_of_trainings_remaining) as TextView).getText() == 6 as String
-
     }
-
 }

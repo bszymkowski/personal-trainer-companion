@@ -39,6 +39,10 @@ public class TrainingsRepository extends BaseRepository<Training, Long> {
     }
 
     public void addTraining(final TrainingDTO trainingDTO) {
+        if (getNumberOfTrainingsRemaining() <1) {
+            Toast.makeText(context, R.string.no_trainings_remaining, Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (isLastTrainingToday()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setTitle(context.getResources().getString(R.string.training_added_today_title));

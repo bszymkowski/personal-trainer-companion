@@ -32,12 +32,14 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
 
     private static final String TAG = OverviewActivity.class.getSimpleName();
     private TextView mLastPaymentInfoText;
+    private FloatingActionButton mAddTrainingButton;
 
     private PaymentRepository mPaymentRepository;
     private TrainingsRepository mTrainingsRepository;
     private TextView mNumberOfTrainingsInfoText;
     private TextView mLastTrainingInfoText;
     private DateTimeFormatter dateTimeFormatter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +67,8 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
                 floatingActionsMenu.collapse();
             }
         });
-        FloatingActionButton fabAddSingleTraining = (FloatingActionButton) findViewById(R.id.fab_action_add_training);
-        fabAddSingleTraining.setOnClickListener(new View.OnClickListener() {
+        mAddTrainingButton = (FloatingActionButton) findViewById(R.id.fab_action_add_training);
+        mAddTrainingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(OverviewActivity.this);
@@ -82,6 +84,7 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mTrainingsRepository.addTraining(new TrainingDTO(new DateTime()));
+                        floatingActionsMenu.collapse();
                         dialog.dismiss();
                     }
                 });
@@ -109,7 +112,15 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
     }
 
     private void updateNumberOfTrainingsRemaining() {
-        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string), mTrainingsRepository.getNumberOfTrainingsRemaining()));
+        int trainingsRemaining = mTrainingsRepository.getNumberOfTrainingsRemaining();
+        mNumberOfTrainingsInfoText.setText(String.format(getResources().getString(R.string.number_format_string), trainingsRemaining));
+        if (trainingsRemaining > 0) {
+            mAddTrainingButton.setVisibility(View.VISIBLE);
+        } else {
+            mAddTrainingButton.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override
@@ -158,5 +169,6 @@ public class OverviewActivity extends AppCompatActivity implements AddPaymentDia
         updateLastPayment();
         updateNumberOfTrainingsRemaining();
         updateLastTrainingInfo();
+
     }
 }

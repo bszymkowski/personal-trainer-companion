@@ -55,6 +55,7 @@ public abstract class BaseRepository<T, ID> {
 
     protected Dao<T, ID> getDao() {
         try {
+            //noinspection unchecked
             dao = OpenHelperManager.getHelper(context, Database.class).getDao(klazz);
             return dao;
         } catch (SQLException e) {

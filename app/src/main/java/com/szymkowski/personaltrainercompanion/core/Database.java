@@ -61,11 +61,13 @@ public class Database extends OrmLiteSqliteOpenHelper implements DbCore{
 
     @Override
     public Dao getDomainDao(Class<?> klazz)throws SQLException {
+        //noinspection unchecked
         return getDao(klazz);
     }
 
     @Override
     public RuntimeExceptionDao getDomainRuntimeExceptionDao(Class<?> klazz) {
+        //noinspection unchecked
         return getRuntimeExceptionDao(klazz);
     }
 }

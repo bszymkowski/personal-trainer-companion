@@ -4,5 +4,3 @@ build/
 *.iml
 .idea/
 gradle/
-
-*.xml

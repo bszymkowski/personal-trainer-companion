@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Personal Trainer Companion</string>
+    <string name="action_settings">Settings</string>
+    <string name="last_payment_info">Last Payment:</string>
+    <string name="no_data_found">None found!</string>
+    <string name="fab_add_payment">Payment</string>
+    <string formatted="false" name="last_payment_info_string">%s for %d classes.</string>
+    <string name="number_of_classes_hint">Set number of classes:</string>
+    <string name="payment_already_added_today_title">Payment with this date already added!</string>
+    <string name="payment_already_added_today_message">A payment has already been added today. Do you want to add another?</string>
+    <string name="date_time_format">dd/MMM/yyyy</string>
+    <string name="remaining_classes_info">Trainings remaining:</string>
+    <string formatted="false" name="number_format_string">%d</string>
+    <string name="error_saving_entity">Ooops! There has been an error accessing the database! Your data has not been saved!</string>
+    <string name="error_retrieving_all_entities">Ooops! There has been an error! Your data could not be read!</string>
+    <string name="error_retrieving_entity">Ooops! There has been an error accessing your data!</string>
+    <string name="add_single_training_title">Add a new training?</string>
+    <string name="add_single_training_message">Add a new training for today?</string>
+    <string name="training_added_today_title">Are you sure?</string>
+    <string name="training_added_today_message">A training with the same date has already been added. Do you want to add another?</string>
+    <string name="last_training_info">Last training:</string>
+    <string name="fab_add_training">Training (Single)</string>
+    <string name="no_trainings_remaining">No trainings remaining! Add a new payment first!</string>
+</resources>

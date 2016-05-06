@@ -1,19 +1,12 @@
 package com.szymkowski.personaltrainercompanion
 
 import android.app.AlertDialog
-import android.app.Dialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.TextView
-
-import com.getbase.floatingactionbutton.FloatingActionButton
-import com.getbase.floatingactionbutton.FloatingActionsMenu
 import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialogCallback
@@ -23,12 +16,10 @@ import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingDTO
 import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsRepository
 import kotlinx.android.synthetic.main.activity_overview.*
 import kotlinx.android.synthetic.main.content_overview.*
-
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-
-import java.util.Locale
+import java.util.*
 
 class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, RepositoryCallback {
 
@@ -41,7 +32,6 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_overview)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar?
         setSupportActionBar(toolbar)
 
         dateTimeFormatter = DateTimeFormat.forPattern(resources.getString(R.string.date_time_format)).withLocale(Locale.getDefault())
@@ -90,7 +80,8 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
 
     private fun updateNumberOfTrainingsRemaining() {
         val trainingsRemaining = mTrainingsRepository!!.numberOfTrainingsRemaining
-        number_of_trainings_remaining.setText(String.format(resources.getString(R.string.number_format_string), trainingsRemaining))
+        number_of_trainings_remaining.text = trainingsRemaining.toString()
+
         if (trainingsRemaining > 0) {
             fab_action_add_training.visibility = View.VISIBLE
         } else {

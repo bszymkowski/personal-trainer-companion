@@ -1,8 +1,13 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
 
 }
 
@@ -11,5 +16,18 @@ dependencies {
     compile 'com.j256.ormlite:ormlite-android:4.45'
     provided 'org.projectlombok:lombok:1.16.6'
     compile 'joda-time:joda-time:2.9.1'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+}
+buildscript {
+    ext.kotlin_version = '1.0.1-2'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+repositories {
+    mavenCentral()
 }

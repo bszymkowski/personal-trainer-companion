@@ -1,5 +1,13 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'groovyx.grooid.groovy-android'
+
+buildscript {
+    dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-android-extensions:1.0.1-2'
+    }
+}
 
 android {
     compileSdkVersion 23
@@ -17,6 +25,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
     }
 }
 
@@ -40,7 +51,20 @@ dependencies {
 
     testCompile 'org.robospock:robospock:1.0.0'
     testCompile 'cglib:cglib-nodep:3.2.0'
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
+}
+buildscript {
+    ext.kotlin_version = '1.0.1-2'
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+repositories {
+    mavenCentral()
 }
 
 

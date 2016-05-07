@@ -47,9 +47,9 @@ class TrainingsRepository(context: Context, callback: RepositoryCallback, privat
     private val count: Int
         get() {
             var result = 0
-            val dao = dao
+            val dao = getDao()
             try {
-                result = dao.countOf().toInt()
+                result = dao?.countOf()!!.toInt()
             } catch (e: SQLException) {
                 Log.e(TAG, "SQLite exception when attempting to count trainings!")
                 Toast.makeText(context, context.resources.getString(R.string.error_retrieving_entity), Toast.LENGTH_SHORT).show()

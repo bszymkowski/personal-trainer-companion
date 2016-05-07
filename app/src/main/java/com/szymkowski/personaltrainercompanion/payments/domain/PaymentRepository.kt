@@ -43,15 +43,17 @@ class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRe
         }
 
     override fun getNumberOfTrainingsPaidFor(): Int {
-        val paymentLongDao = dao
+        val paymentLongDao = getDao()
         var result = 0
-        try {
-            val allPayments = paymentLongDao.queryForAll()
-            for (payment in allPayments) {
-                result += payment.numberOfClassesPaid
+        if (paymentLongDao != null) {
+            try {
+                val allPayments = paymentLongDao.queryForAll()
+                for (payment in allPayments!!) {
+                    result += payment.numberOfClassesPaid
+                }
+            } catch (e: SQLException) {
+                Log.e(TAG, "SQLite exception in counting total number of classes paid. Exception: " + e.message)
             }
-        } catch (e: SQLException) {
-            Log.e(TAG, "SQLite exception in counting total number of classes paid. Exception: " + e.message)
         }
 
         close()

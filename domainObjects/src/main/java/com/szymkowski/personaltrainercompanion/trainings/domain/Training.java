@@ -16,7 +16,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor(suppressConstructorProperties = true)
 @DatabaseTable(tableName = Training.TABLE_NAME)
-class Training extends BaseEntity {
+//todo undo public
+public class Training extends BaseEntity {
     public static final String TABLE_NAME = "table_trainings";
 
     @DatabaseField(generatedId = true)

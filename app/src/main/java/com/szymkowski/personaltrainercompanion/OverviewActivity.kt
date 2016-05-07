@@ -24,9 +24,9 @@ import java.util.*
 class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, RepositoryCallback {
 
 
-    private var mPaymentRepository: PaymentRepository? = null
-    private var mTrainingsRepository: TrainingsRepository? = null
-    private var dateTimeFormatter: DateTimeFormatter? = null
+    lateinit private var mPaymentRepository: PaymentRepository
+    lateinit private var mTrainingsRepository: TrainingsRepository
+    lateinit private var dateTimeFormatter: DateTimeFormatter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,7 +53,7 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
             builder.setMessage(R.string.add_single_training_message)
             builder.setNegativeButton(android.R.string.no) { dialog, which -> dialog.dismiss() }
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                mTrainingsRepository!!.addTraining(TrainingDTO(DateTime()))
+                mTrainingsRepository.addTraining(TrainingDTO(DateTime()))
                 fab_menu.collapse()
                 dialog.dismiss()
             }
@@ -72,14 +72,14 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
     }
 
     private fun updateLastTrainingInfo() {
-        val dateTime = mTrainingsRepository!!.latestTrainingDate
+        val dateTime = mTrainingsRepository.latestTrainingDate
         if (dateTime != null) {
-            last_training_info_date.text = dateTimeFormatter!!.print(dateTime)
+            last_training_info_date.text = dateTimeFormatter.print(dateTime)
         }
     }
 
     private fun updateNumberOfTrainingsRemaining() {
-        val trainingsRemaining = mTrainingsRepository!!.numberOfTrainingsRemaining
+        val trainingsRemaining = mTrainingsRepository.numberOfTrainingsRemaining
         number_of_trainings_remaining.text = trainingsRemaining.toString()
 
         if (trainingsRemaining > 0) {
@@ -112,17 +112,17 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
     }
 
     override fun addPayment(newPayment: PaymentDTO) {
-        mPaymentRepository!!.addPayment(newPayment)
+        mPaymentRepository.addPayment(newPayment)
     }
 
     private fun updateLastPayment() {
-        val lastPaymentDto = mPaymentRepository!!.lastPaymentDTO
+        val lastPaymentDto = mPaymentRepository.lastPaymentDTO
         val paymentInfoText: String
         if (lastPaymentDto == null) {
             paymentInfoText = resources.getString(R.string.no_data_found)
         } else {
             val rawPaymentInfo = resources.getString(R.string.last_payment_info_string)
-            val dateTime = dateTimeFormatter!!.print(lastPaymentDto.paymentDate)
+            val dateTime = dateTimeFormatter.print(lastPaymentDto.paymentDate)
             paymentInfoText = String.format(rawPaymentInfo, dateTime, lastPaymentDto.numberOfClassesPaid)
         }
         last_payment_info.text = paymentInfoText
@@ -138,6 +138,6 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
 
     companion object {
 
-        private val TAG = OverviewActivity::class.java!!.getSimpleName()
+        private val TAG = OverviewActivity::class.java.getSimpleName()
     }
 }

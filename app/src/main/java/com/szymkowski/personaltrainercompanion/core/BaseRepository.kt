@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType
 import java.sql.SQLException
 import java.util.*
 
-abstract class BaseRepository<T, ID> protected constructor(protected val context: Context, private val callback: RepositoryCallback) {
+abstract class BaseRepository<T, ID> protected constructor(protected val context: Context, private val callback: RepositoryCallback ) {
     private val klazz: Class<T>
     private var dao: Dao<T, ID>? = null
 
@@ -78,8 +78,7 @@ abstract class BaseRepository<T, ID> protected constructor(protected val context
     }
 
     companion object {
-
-        private val TAG = BaseRepository::class.java!!.getName()
+        private val TAG = BaseRepository::class.java.name
     }
 
 

@@ -16,7 +16,7 @@ class TrainingsRepository(context: Context, callback: RepositoryCallback, privat
     private val trainingMapper = TrainingMapper.INSTANCE
 
     val numberOfTrainingsRemaining: Int
-        get() = provider.numberOfTrainingsPaidFor - count
+        get() = provider.getNumberOfTrainingsPaidFor()- count
 
     val latestTrainingDate: DateTime?
         get() {

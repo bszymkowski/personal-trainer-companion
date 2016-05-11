@@ -12,6 +12,7 @@ import java.sql.SQLException
 
 
 class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRepository<Payment, Long>(context, callback), PaidNumberOfTrainingsProvider {
+
     private val paymentMapper = PaymentMapper.INSTANCE
 
     fun addPayment(paymentDTO: PaymentDTO) {
@@ -41,6 +42,7 @@ class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRe
             val lastPayment = latest
             return paymentMapper.paymentToPaymentDTO(lastPayment)
         }
+
 
     override fun getNumberOfTrainingsPaidFor(): Int {
         val paymentLongDao = getDao()

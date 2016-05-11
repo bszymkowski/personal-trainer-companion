@@ -51,12 +51,13 @@ class Database(context: Context) : OrmLiteSqliteOpenHelper(context, Database.DAT
     }
 
     @Throws(SQLException::class)
+    //todo take a look at them "Any"
     override fun getDomainDao(klazz: Class<*>): Dao<Any, Any> {
         return getDao<Dao<Any, Any>, Any>(klazz as Class<Any>)
     }
 
     override fun getDomainRuntimeExceptionDao(klazz: Class<*>): RuntimeExceptionDao<Any, Any> {
-
+        //todo take a look at them "Any"
         return getRuntimeExceptionDao<RuntimeExceptionDao<Any, Any>, Any>(klazz as Class<Any>)
     }
 

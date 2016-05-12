@@ -2,28 +2,14 @@ package com.szymkowski.personaltrainercompanion.trainings.domain
 
 import org.joda.time.DateTime
 
-import lombok.AllArgsConstructor
-import lombok.Data
-import lombok.EqualsAndHashCode
-import lombok.NoArgsConstructor
+data class TrainingDTO (val id : Long){
 
-@AllArgsConstructor(suppressConstructorProperties = true)
-@Data
-@EqualsAndHashCode
-@NoArgsConstructor
-class TrainingDTO {
-    var id: Long?
-        set(id) {
-            this.id = id
-        }
-    var trainingDate: DateTime
-        set(trainingDate) {
-            this.trainingDate = trainingDate
-        }
+    lateinit var trainingDate: DateTime
 
-    constructor(trainingDate: DateTime) {
-        this.id = 0L
+    constructor(trainingDate: DateTime) : this(0L) {
         this.trainingDate = trainingDate
     }
+
+    constructor() : this(0L)
 
 }

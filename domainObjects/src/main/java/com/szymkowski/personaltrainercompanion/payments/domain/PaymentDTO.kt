@@ -3,17 +3,14 @@ package com.szymkowski.personaltrainercompanion.payments.domain
 import org.joda.time.DateTime
 
 
-data class PaymentDTO (val id : Long) {
+data class PaymentDTO (
+        val id : Long,
+        var paymentDate: DateTime,
+        var numberOfClassesPaid: Int
+) {
 
-    constructor(paymentDate: DateTime, numberOfClassesPaid: Int) : this(0L){
-        this.paymentDate = paymentDate
-        this.numberOfClassesPaid = numberOfClassesPaid
-    }
+    constructor(paymentDate: DateTime, numberOfClassesPaid: Int) : this(0L, paymentDate, numberOfClassesPaid)
 
-    constructor() : this(0L)
-
-    lateinit var paymentDate: DateTime
-
-    var numberOfClassesPaid: Int = 0
+    constructor() : this(0L, DateTime.now(), 0)
 
 }

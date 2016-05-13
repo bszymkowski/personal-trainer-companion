@@ -13,10 +13,8 @@ import java.sql.SQLException
 
 class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRepository<Payment, Long>(context, callback), PaidNumberOfTrainingsProvider {
 
-    private val paymentMapper = PaymentMapper.INSTANCE
-
     fun addPayment(paymentDTO: PaymentDTO) {
-        val payment = paymentMapper.paymentDTOToPayment(paymentDTO)
+        val payment = PaymentMapper.paymentDTOToPayment(paymentDTO)
         val previous = latest
         if (isPaymentOnSameDay(payment, previous)) {
             val builder = AlertDialog.Builder(context)
@@ -24,12 +22,12 @@ class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRe
             builder.setMessage(R.string.payment_already_added_today_message)
             builder.setNegativeButton(android.R.string.no) { dialog, which -> dialog.dismiss() }
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                create(paymentMapper.paymentDTOToPayment(paymentDTO))
+                create(PaymentMapper.paymentDTOToPayment(paymentDTO))
                 dialog.dismiss()
             }
             builder.show()
         } else {
-            create(paymentMapper.paymentDTOToPayment(paymentDTO))
+            create(PaymentMapper.paymentDTOToPayment(paymentDTO))
         }
     }
 
@@ -40,7 +38,7 @@ class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRe
     val lastPaymentDTO: PaymentDTO?
         get() {
             val lastPayment = latest
-            return paymentMapper.paymentToPaymentDTO(lastPayment)
+            return if (lastPayment != null) PaymentMapper.paymentToPaymentDTO(lastPayment) else null
         }
 
 

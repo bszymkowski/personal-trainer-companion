@@ -34,7 +34,7 @@ class PaymentRepository(context: Context, callback: RepositoryCallback) : BaseRe
     }
 
     private fun isPaymentOnSameDay(current: Payment, previous: Payment?): Boolean {
-        return previous != null && DateTimeComparator.getDateOnlyInstance().compare(current.getDate(), previous.getDate()) == 0
+        return previous != null && DateTimeComparator.getDateOnlyInstance().compare(current.paymentDate, previous.paymentDate) == 0
     }
 
     val lastPaymentDTO: PaymentDTO?

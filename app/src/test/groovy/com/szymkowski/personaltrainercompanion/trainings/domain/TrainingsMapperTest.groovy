@@ -13,7 +13,6 @@ class TrainingsMapperTest extends GradleRoboSpecification {
         given:
             def date = new DateTime()
             def training = new Training()
-            training.setId(0L)
             training.setDate(date)
         when:
             def trainingDTO = TrainingMapper.INSTANCE.trainingToTrainingDto(training)

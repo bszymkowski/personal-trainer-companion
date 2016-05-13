@@ -13,13 +13,13 @@ public interface PaymentMapper {
     PaymentMapper INSTANCE = Mappers.getMapper(PaymentMapper.class);
 
     @Mappings({
-            @Mapping(source = "date", target = "paymentDate"),
+            @Mapping(source = "paymentDate", target = "paymentDate"),
             @Mapping(source = "numberOfClassesPaid", target = "numberOfClassesPaid")
     })
     PaymentDTO paymentToPaymentDTO(Payment payment);
 
     @Mappings({
-            @Mapping(source = "paymentDate", target = "date"),
+            @Mapping(source = "paymentDate", target = "paymentDate"),
             @Mapping(source = "numberOfClassesPaid", target = "numberOfClassesPaid")
     })
     Payment paymentDTOToPayment(PaymentDTO paymentDTO);

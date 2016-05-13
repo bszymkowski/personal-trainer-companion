@@ -2,35 +2,23 @@ package com.szymkowski.personaltrainercompanion.trainings.domain
 
 import com.j256.ormlite.field.DatabaseField
 import com.j256.ormlite.table.DatabaseTable
-import com.szymkowski.personaltrainercompanion.core.BaseEntity
-
+import com.szymkowski.personaltrainercompanion.core.CommonColumns
 import org.joda.time.DateTime
 
-import lombok.AllArgsConstructor
-import lombok.Data
-import lombok.EqualsAndHashCode
-import lombok.NoArgsConstructor
-
-@EqualsAndHashCode(callSuper = true)
-@Data
-@NoArgsConstructor
-@AllArgsConstructor(suppressConstructorProperties = true)
 @DatabaseTable(tableName = Training.TABLE_NAME)
-//todo undo public
-class Training : BaseEntity {
+data class Training (@DatabaseField(generatedId = true) val id : Long){
 
-    @DatabaseField(generatedId = true)
-    var id: Long?
-        set(id) {
-            this.id = id
-        }
+    @DatabaseField(columnName = CommonColumns.DATE_COLUMN)
+    lateinit var date : DateTime
 
-    constructor(trainingDate: DateTime) : super(trainingDate) {
-        this.id = 0L
+    constructor(trainingDate: DateTime) : this(0L) {
+        this.date = trainingDate
     }
 
+    constructor() : this(0L)
+
     companion object {
-        val TABLE_NAME = "table_trainings"
+        const val TABLE_NAME = "table_trainings"
     }
 
 }

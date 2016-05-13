@@ -21,7 +21,7 @@ class TrainingsRepository(context: Context, callback: RepositoryCallback, privat
     val latestTrainingDate: DateTime?
         get() {
             val training = latest
-            return training?.getDate()
+            return training?.date
         }
 
     fun addTraining(trainingDTO: TrainingDTO) {
@@ -62,7 +62,7 @@ class TrainingsRepository(context: Context, callback: RepositoryCallback, privat
     private val isLastTrainingToday: Boolean
         get() {
             val training = latest
-            return training != null && DateTimeComparator.getDateOnlyInstance().compare(DateTime(), training.getDate()) == 0
+            return training != null && DateTimeComparator.getDateOnlyInstance().compare(DateTime(), training.date) == 0
         }
 
     companion object {

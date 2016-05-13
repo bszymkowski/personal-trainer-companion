@@ -63,7 +63,7 @@ abstract class BaseRepository<T, ID> protected constructor(protected val context
             var entity: T? = null
             getDao()
             try {
-                entity = dao!!.queryBuilder().orderBy(BaseEntity.DATE_COLUMN, false).limit(1L).queryForFirst()
+                entity = dao!!.queryBuilder().orderBy(CommonColumns.DATE_COLUMN, false).limit(1L).queryForFirst()
             } catch (e: SQLException) {
                 Log.e(TAG, "SQLite exception when accessing " + klazz.simpleName + " database!")
                 Toast.makeText(context, context.resources.getString(R.string.error_retrieving_all_entities), Toast.LENGTH_SHORT).show()

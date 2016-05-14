@@ -13,7 +13,6 @@ import org.joda.time.DateTimeComparator
 import java.sql.SQLException
 
 class TrainingsRepository(context: Context, callback: RepositoryCallback, private val provider: PaidNumberOfTrainingsProvider) : BaseRepository<Training, Long>(context, callback) {
-    private val trainingMapper = TrainingMapper.INSTANCE
 
     val numberOfTrainingsRemaining: Int
         get() = provider.getNumberOfTrainingsPaidFor()- count
@@ -35,12 +34,12 @@ class TrainingsRepository(context: Context, callback: RepositoryCallback, privat
             builder.setMessage(context.resources.getString(R.string.training_added_today_message))
             builder.setNegativeButton(android.R.string.no) { dialog, which -> dialog.dismiss() }
             builder.setPositiveButton(android.R.string.yes) { dialog, which ->
-                create(trainingMapper.trainingDtoToTraining(trainingDTO))
+                create(TrainingMapper.trainingDtoToTraining(trainingDTO))
                 dialog.dismiss()
             }
             builder.show()
         } else {
-            create(trainingMapper.trainingDtoToTraining(trainingDTO))
+            create(TrainingMapper.trainingDtoToTraining(trainingDTO))
         }
     }
 

@@ -33,7 +33,7 @@ abstract class BaseRepository<T, ID> protected constructor(protected val context
 
     protected fun retrieveAll(): List<T> {
         val dao = getDao()
-        var result : List<T> = ArrayList<T>()
+        var result : List<T> = ArrayList()
         try {
             result = dao?.queryForAll() as List<T>
         } catch (e: SQLException) {

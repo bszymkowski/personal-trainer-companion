@@ -41,7 +41,7 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
         mTrainingsRepository = TrainingsRepository(this, this, mPaymentRepository)
 
 
-        fab_action_add_payment.setOnClickListener(View.OnClickListener {
+        fab_action_add_payment.setOnClickListener({
             val addPaymentDialog = AddPaymentDialog(this@OverviewActivity, this@OverviewActivity)
             addPaymentDialog.show()
             fab_menu.collapse()
@@ -138,6 +138,6 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
 
     companion object {
 
-        private val TAG = OverviewActivity::class.java.getSimpleName()
+        private val TAG = OverviewActivity::class.java.simpleName
     }
 }

@@ -16,7 +16,7 @@ class TrainingsMapperTest extends GradleRoboSpecification {
             training.setDate(date)
         when:
             def trainingDTO = TrainingMapper.INSTANCE.trainingToTrainingDto(training)
-        then:   
+        then:
             trainingDTO.trainingDate == training.date
     }
 

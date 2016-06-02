@@ -42,8 +42,13 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile project(':domainObjects')
 
+
+//    compile 'org.jetbrains.anko:anko-sdk23:0.8.3' // sdk19, sdk21, sdk23 are also available
+//    compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3' // For appcompat-v7 bindings
+//    compile 'org.jetbrains.anko:anko-design:0.8.3'
+
     testCompile 'org.robospock:robospock:1.0.0'
-    testCompile 'cglib:cglib-nodep:3.2.0'
+    testCompile 'cglib:cglib-nodep:3.2.2'
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
 }

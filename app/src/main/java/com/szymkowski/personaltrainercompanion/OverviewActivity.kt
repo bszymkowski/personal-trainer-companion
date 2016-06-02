@@ -1,25 +1,26 @@
 package com.szymkowski.personaltrainercompanion
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.szymkowski.personaltrainercompanion.core.DateFormatter
 import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialogCallback
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentRepository
+import com.szymkowski.personaltrainercompanion.trainings.TrainingsActivity
 import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingDTO
 import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsRepository
 import kotlinx.android.synthetic.main.activity_overview.*
 import kotlinx.android.synthetic.main.content_overview.*
 import org.joda.time.DateTime
-import org.joda.time.format.DateTimeFormat
 import org.joda.time.format.DateTimeFormatter
-import java.util.*
 
 class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, RepositoryCallback {
 
@@ -34,7 +35,7 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
         setContentView(R.layout.activity_overview)
         setSupportActionBar(toolbar)
 
-        dateTimeFormatter = DateTimeFormat.forPattern(resources.getString(R.string.date_time_format)).withLocale(Locale.getDefault())
+        dateTimeFormatter = DateFormatter.getDateFormatter(resources.getString(R.string.date_time_format))
 
         mPaymentRepository = PaymentRepository(this, this)
 
@@ -58,6 +59,11 @@ class OverviewActivity : AppCompatActivity(), AddPaymentDialogCallback, Reposito
                 dialog.dismiss()
             }
             builder.show()
+        }
+        last_training_info_date.setOnClickListener {
+            val intent = Intent(this@OverviewActivity, TrainingsActivity::class.java)
+            startActivity(intent)
+
         }
 
         Log.i(TAG, "Activity created")

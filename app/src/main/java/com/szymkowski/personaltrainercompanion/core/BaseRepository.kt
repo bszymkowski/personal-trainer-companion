@@ -10,7 +10,7 @@ import java.lang.reflect.ParameterizedType
 import java.sql.SQLException
 import java.util.*
 
-abstract class BaseRepository<T, ID> protected constructor(protected val context: Context, private val callback: RepositoryCallback ) {
+abstract class BaseRepository<T, ID> protected constructor(protected val context: Context, private val callback: RepositoryCallback?) {
     private val klazz: Class<T>
     private var dao: Dao<T, ID>? = null
 
@@ -26,8 +26,7 @@ abstract class BaseRepository<T, ID> protected constructor(protected val context
             Log.e(TAG, "SQLite exception when saving " + klazz.simpleName + "!")
             Toast.makeText(context, context.resources.getString(R.string.error_saving_entity), Toast.LENGTH_SHORT).show()
         }
-
-        callback.onDatasetChanged()
+        callback?.onDatasetChanged()
         close()
     }
 
@@ -56,6 +55,22 @@ abstract class BaseRepository<T, ID> protected constructor(protected val context
             return null
         }
 
+    }
+
+    fun find(id : ID) : T? {
+        getDao()
+
+        var entity: T? = null
+        if (dao != null) {
+            try {
+                entity = dao!!.queryForId(id)
+            } catch (e: SQLException) {
+                Log.e(TAG, "SQLite exception when accessing " + klazz.simpleName + " database!")
+                Toast.makeText(context, context.resources.getString(R.string.error_retrieving_all_entities), Toast.LENGTH_SHORT).show()
+            }
+        }
+        close()
+        return entity
     }
 
     protected val latest: T?

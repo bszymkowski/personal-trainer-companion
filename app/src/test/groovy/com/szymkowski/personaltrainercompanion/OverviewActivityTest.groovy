@@ -1,4 +1,5 @@
 package com.szymkowski.personaltrainercompanion
+import android.app.Activity
 import android.app.AlertDialog
 import android.os.Build
 import android.view.View
@@ -9,11 +10,13 @@ import com.szymkowski.personaltrainercompanion.core.RepositoryCallback
 import com.szymkowski.personaltrainercompanion.payments.AddPaymentDialog
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDTO
 import com.szymkowski.personaltrainercompanion.payments.domain.PaymentDaoHelper
+import com.szymkowski.personaltrainercompanion.trainings.TrainingsActivity
 import com.szymkowski.personaltrainercompanion.trainings.domain.TrainingsDaoHelper
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import org.robolectric.Robolectric
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.Shadows
 import org.robolectric.annotation.Config
 import org.robolectric.shadows.ShadowAlertDialog
 import org.robolectric.shadows.ShadowDialog
@@ -334,5 +337,16 @@ class OverviewActivityTest extends GradleRoboSpecification {
             ShadowAlertDialog.latestAlertDialog.getButton(AlertDialog.BUTTON_POSITIVE).performClick()
         then:
             (overviewActivity.findViewById(R.id.number_of_trainings_remaining) as TextView).getText() == 6 as String
+    }
+
+    def 'should open TrainingsActivity when clicked on trainings'() {
+        given:
+            def overviewActivity = controller.get()
+            def nextActivityIntent = Shadows.shadowOf(overviewActivity as Activity)
+        when:
+            overviewActivity.findViewById(R.id.last_training_info_date).performClick()
+        then:
+            nextActivityIntent.peekNextStartedActivity().component.className == TrainingsActivity.class.name
+        
     }
 }

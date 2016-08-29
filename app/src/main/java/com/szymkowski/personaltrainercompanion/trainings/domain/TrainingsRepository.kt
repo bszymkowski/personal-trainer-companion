@@ -12,10 +12,13 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeComparator
 import java.sql.SQLException
 
-class TrainingsRepository(context: Context, callback: RepositoryCallback, private val provider: PaidNumberOfTrainingsProvider) : BaseRepository<Training, Long>(context, callback) {
+class TrainingsRepository(context: Context, callback: RepositoryCallback? = null, private val provider: PaidNumberOfTrainingsProvider? = null) : BaseRepository<Training, Long>(context, callback) {
 
     val numberOfTrainingsRemaining: Int
-        get() = provider.getNumberOfTrainingsPaidFor()- count
+        get() = if (provider != null) provider.getNumberOfTrainingsPaidFor()- count else count
+
+
+
 
     val latestTrainingDate: DateTime?
         get() {
@@ -43,7 +46,7 @@ class TrainingsRepository(context: Context, callback: RepositoryCallback, privat
         }
     }
 
-    private val count: Int
+    val count: Int
         get() {
             var result = 0
             val dao = getDao()
